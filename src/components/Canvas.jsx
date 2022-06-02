@@ -2,21 +2,10 @@ import { useLayoutEffect, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import StyleButtons from "./StyleButtons";
 
+import elementGenerator from "../helpers/elementGenerator";
+import distanceCalculater from "../helpers/distanceCalculater"
+
 import "./Canvas.scss";
-
-const elementGenerator = rough.generator();
-
-function createElement(id, x1, y1, x2, y2, type) {
-  const roughElement =
-    type === "line"
-      ? elementGenerator.line(x1, y1, x2, y2)
-      : elementGenerator.rectangle(x1, y1, x2 - x1, y2 - y1);
-  return { id, x1, y1, x2, y2, type, roughElement };
-}
-
-// distance function allows us to calculate the differences between the x,y values.
-const distance = (a, b) =>
-  Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 
 // isWithinElement function allows us to get the point where we clicked between the max min values of x and y.
 const isWithinElement = (x, y, element) => {
@@ -31,7 +20,7 @@ const isWithinElement = (x, y, element) => {
     const a = { x: x1, y: y1 };
     const b = { x: x2, y: y2 };
     const c = { x, y };
-    const offset = distance(a, b) - (distance(a, c) + distance(b, c));
+    const offset = distanceCalculater(a, b) - (distanceCalculater(a, c) + distanceCalculater(b, c));
     return Math.abs(offset) < 1; // We are giving some offset so that we can easily click on the line.
   }
 };
@@ -60,7 +49,7 @@ const Canvas = () => {
 
   // updateElement function allows us to update the x and y coodinates for moving elements.
   const updateElement = (id, x1, y1, x2, y2, type) => {
-    const updatedElement = createElement(id, x1, y1, x2, y2, type);
+    const updatedElement = elementGenerator(id, x1, y1, x2, y2, type);
 
     const copyElementsState = [...elements];
     copyElementsState[id] = updatedElement;
@@ -81,7 +70,7 @@ const Canvas = () => {
       }
     } else {
       const id = elements.length;
-      const element = createElement(
+      const element = elementGenerator(
         id,
         clientX,
         clientY,
