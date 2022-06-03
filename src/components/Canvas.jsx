@@ -3,30 +3,51 @@ import rough from "roughjs/bundled/rough.esm";
 import StyleButtons from "./StyleButtons";
 
 import elementGenerator from "../helpers/elementGenerator";
-import distanceCalculater from "../helpers/distanceCalculater"
+import distanceCalculater from "../helpers/distanceCalculater";
+import cursorChangerForPositions from "../helpers/cursorChangerForPositions";
+import adjustElementCoordinates from "../helpers/adjustElementCoordinates";
+import resizedCoodinates from "../helpers/resizedCoordinates";
 
 import "./Canvas.scss";
 
+// nearPoint function allows us to capturing the points of the drawing with an offset like < 5.
+const nearPoint = (x, y, x1, y1, name) => {
+  return Math.abs(x - x1) < 5 && Math.abs(y - y1) < 5 ? name : null; // We are giving some offset so that we can easily click on the line.
+};
+
 // isWithinElement function allows us to get the point where we clicked between the max min values of x and y.
-const isWithinElement = (x, y, element) => {
+const positionWithinElement = (x, y, element) => {
   const { type, x1, x2, y1, y2 } = element;
   if (type === "rectangle") {
-    const minX = Math.min(x1, x2);
-    const maxX = Math.max(x1, x2);
-    const minY = Math.min(y1, y2);
-    const maxY = Math.max(y1, y2);
-    return x >= minX && x <= maxX && y >= minY && y <= maxY;
+    // This is for capturing the rectangle
+    const topLeft = nearPoint(x, y, x1, y1, "topLeft");
+    const topRight = nearPoint(x, y, x2, y1, "topRight");
+    const bottomLeft = nearPoint(x, y, x1, y2, "bottomLeft");
+    const bottomRight = nearPoint(x, y, x2, y2, "bottomRight");
+    const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
+    return topLeft || topRight || bottomLeft || bottomRight || inside;
   } else {
+    // This is for capturing the line
     const a = { x: x1, y: y1 };
     const b = { x: x2, y: y2 };
     const c = { x, y };
-    const offset = distanceCalculater(a, b) - (distanceCalculater(a, c) + distanceCalculater(b, c));
-    return Math.abs(offset) < 1; // We are giving some offset so that we can easily click on the line.
+    const offset =
+      distanceCalculater(a, b) -
+      (distanceCalculater(a, c) + distanceCalculater(b, c));
+    const start = nearPoint(x, y, x1, y1, "start");
+    const end = nearPoint(x, y, x2, y2, "end");
+    const inside = Math.abs(offset) < 1 ? "inside" : null; // We are giving some offset so that we can easily click on the line.
+    return start || end || inside;
   }
 };
 
 function getElementAtPosition(x, y, elements) {
-  return elements.find((element) => isWithinElement(x, y, element));
+  return elements
+    .map((element) => ({
+      ...element,
+      position: positionWithinElement(x, y, element),
+    }))
+    .find((element) => element.position !== null);
 }
 
 const Canvas = () => {
@@ -66,7 +87,13 @@ const Canvas = () => {
         const offsetX = clientX - element.x1; // Need them to stop jumping coordinates when we select the item.
         const offsetY = clientY - element.y1; // Need them to stop jumping coordinates when we select the item.
         setSelectedElement({ ...element, offsetX, offsetY });
-        setAction("moving");
+
+        // This makes us sure that if the cursor inside of the drawing, the drawing is moving, if it is on the corners, the drawing is resizing.
+        if (element.position === "inside") {
+          setAction("moving");
+        } else {
+          setAction("resizing");
+        }
       }
     } else {
       const id = elements.length;
@@ -79,6 +106,7 @@ const Canvas = () => {
         toolType
       );
       setElements((prevState) => [...prevState, element]);
+      setSelectedElement(element);
 
       setAction("drawing");
     }
@@ -91,12 +119,9 @@ const Canvas = () => {
 
     // Changing the cursor while moving an element.
     if (toolType === "selection") {
-      event.target.style.cursor = getElementAtPosition(
-        clientX,
-        clientY,
-        elements
-      )
-        ? "move"
+      const element = getElementAtPosition(clientX, clientY, elements);
+      event.target.style.cursor = element
+        ? cursorChangerForPositions(element.position)
         : "default";
     }
 
@@ -111,12 +136,27 @@ const Canvas = () => {
       const newX1 = clientX - offsetX;
       const newY1 = clientY - offsetY;
       updateElement(id, newX1, newY1, newX1 + width, newY1 + height, type);
+    } else if (action === "resizing") {
+      const { id, type, position, ...coordinates } = selectedElement;
+      const { x1, y1, x2, y2 } = resizedCoodinates(
+        clientX,
+        clientY,
+        position,
+        coordinates
+      );
+      updateElement(id, x1, y1, x2, y2, type);
     }
   };
 
   ////////////////////////////////////////////////////////////////////////////////////
 
   const mouseUpHandler = () => {
+    const index = selectedElement.id;
+    const { id, type } = elements[index];
+    if (action === "drawing" || action === "resizing") {
+      const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
+      updateElement(id, x1, y1, x2, y2, type);
+    }
     setAction("none");
     setSelectedElement(null);
   };
