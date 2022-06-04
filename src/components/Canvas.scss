@@ -1,8 +1,10 @@
 .container-buttons {
   position: fixed;
-  width: 10rem;
-  background-color: rgb(124, 209, 13);
-  border: 2px solid  rgb(56, 94, 6) ;
+  padding: 0.8rem;
+  background-color: #6100FF;
+  border: none ;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px;
   border-radius: 1rem;
-  top: 50%
+  top: 50%;
+  left: 0.3rem
 }
