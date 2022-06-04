@@ -1,4 +1,4 @@
-.container-buttons {
+.container-style-buttons {
   position: fixed;
   padding: 0.3rem;
   background-color: white;
@@ -7,4 +7,16 @@
   border-radius: 1rem;
   top: 40%;
   left: 0.3rem
+}
+
+.container-undo-redo-buttons {
+  position: fixed;
+  display: flex;
+  padding: 0.3rem;
+  margin: 0.3rem;
+  background-color: white;
+  border: none ;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px;
+  border-radius: 1rem;
+  bottom: 0;
 }
