@@ -2,11 +2,15 @@ import React from "react";
 
 import "./StyleButtons.scss";
 
-const StyleButtons = ({ type, id, checked, onChange }) => {
+const StyleButtons = ({ id, onClick, src }) => {
   return (
-    <div className="radio-container">
-      <input type={type} id={id} checked={checked} onChange={onChange} />
-      <label htmlFor={id}>{id}</label>
+    <div className="icon-container">
+      <img
+        src={src}
+        id={id}
+        alt={id}
+        onClick={onClick}
+      />
     </div>
   );
 };
