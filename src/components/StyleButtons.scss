@@ -9,6 +9,7 @@
   width: 3rem;
   height: 3rem;
   margin: 0.4rem 0;
+  border: none;
   cursor: pointer;
   &:hover {
     transition: all 400ms ease;
@@ -21,9 +22,5 @@
   &.active {
     transition: all 400ms ease;
     background-color: #FFDC60;
-  }
-  img {
-    width: 20px;
-    height: 20px;
   }
 }
