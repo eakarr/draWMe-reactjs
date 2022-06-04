@@ -170,16 +170,19 @@ const Canvas = () => {
     <div>
       <div className="container-buttons">
         <StyleButtons
+          toolType={toolType}
           src={mouseIcon}
           id={"selection"}
           onClick={() => setToolType("selection")}
         />
         <StyleButtons
+          toolType={toolType}
           src={lineIcon}
           id={"line"}
           onClick={() => setToolType("line")}
         />
         <StyleButtons
+          toolType={toolType}
           src={squareIcon}
           id={"rectangle"}
           onClick={() => setToolType("rectangle")}
