@@ -9,6 +9,9 @@ import adjustElementCoordinates from "../helpers/adjustElementCoordinates";
 import resizedCoodinates from "../helpers/resizedCoordinates";
 
 import "./Canvas.scss";
+import mouseIcon from "../assets/mouse-icon.svg";
+import squareIcon from "../assets/square-icon.svg";
+import lineIcon from "../assets/line-icon.svg";
 
 // nearPoint function allows us to capturing the points of the drawing with an offset like < 5.
 const nearPoint = (x, y, x1, y1, name) => {
@@ -167,22 +170,19 @@ const Canvas = () => {
     <div>
       <div className="container-buttons">
         <StyleButtons
-          type={"radio"}
+          src={mouseIcon}
           id={"selection"}
-          checked={toolType === "selection"}
-          onChange={() => setToolType("selection")}
+          onClick={() => setToolType("selection")}
         />
         <StyleButtons
-          type={"radio"}
+          src={lineIcon}
           id={"line"}
-          checked={toolType === "line"}
-          onChange={() => setToolType("line")}
+          onClick={() => setToolType("line")}
         />
         <StyleButtons
-          type={"radio"}
+          src={squareIcon}
           id={"rectangle"}
-          checked={toolType === "rectangle"}
-          onChange={() => setToolType("rectangle")}
+          onClick={() => setToolType("rectangle")}
         />
       </div>
       <canvas
