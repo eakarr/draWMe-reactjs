@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useHistory } from "../hooks/useHistory";
 import rough from "roughjs/bundled/rough.esm";
 import StyleButtons from "./StyleButtons";
 
@@ -10,6 +11,7 @@ import resizedCoodinates from "../helpers/resizedCoordinates";
 
 import "./Canvas.scss";
 import styledButtonTypes from "../helpers/styledButtonTypes";
+import RedoUndoButtons from "./RedoUndoButtons";
 
 // nearPoint function allows us to capturing the points of the drawing with an offset like < 5.
 const nearPoint = (x, y, x1, y1, name) => {
@@ -52,7 +54,7 @@ function getElementAtPosition(x, y, elements) {
 }
 
 const Canvas = () => {
-  const [elements, setElements] = useState([]);
+  const [elements, setElements, undo, redo] = useHistory([]);
   const [action, setAction] = useState("none");
   const [toolType, setToolType] = useState("line");
   const [selectedElement, setSelectedElement] = useState(null);
@@ -69,13 +71,31 @@ const Canvas = () => {
     elements.forEach(({ roughElement }) => roughCanvas.draw(roughElement));
   }, [elements]);
 
+  // This is for setting the ctrl-z / ctrl-y commands.
+  useEffect(() => {
+    const undoRedoFunction = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "z") {
+        undo()
+      }
+      if ((event.metaKey || event.ctrlKey) && event.key === "y") {
+        redo()
+      }
+    };
+
+    document.addEventListener("keydown", undoRedoFunction);
+
+    return () => {
+      document.removeEventListener("keydown", undoRedoFunction);
+    };
+  }, [undo, redo]);
+
   // updateElement function allows us to update the x and y coodinates for moving elements.
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const updatedElement = elementGenerator(id, x1, y1, x2, y2, type);
 
     const copyElementsState = [...elements];
     copyElementsState[id] = updatedElement;
-    setElements(copyElementsState);
+    setElements(copyElementsState, true);
   };
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +108,7 @@ const Canvas = () => {
         const offsetX = clientX - element.x1; // Need them to stop jumping coordinates when we select the item.
         const offsetY = clientY - element.y1; // Need them to stop jumping coordinates when we select the item.
         setSelectedElement({ ...element, offsetX, offsetY });
+        setElements((prevState) => prevState); // Need this to fix redo-undo logic. Taking the prevState snapshots.
 
         // This makes us sure that if the cursor inside of the drawing, the drawing is moving, if it is on the corners, the drawing is resizing.
         if (element.position === "inside") {
@@ -152,11 +173,13 @@ const Canvas = () => {
   ////////////////////////////////////////////////////////////////////////////////////
 
   const mouseUpHandler = () => {
-    const index = selectedElement.id;
-    const { id, type } = elements[index];
-    if (action === "drawing" || action === "resizing") {
-      const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
-      updateElement(id, x1, y1, x2, y2, type);
+    if (selectedElement) {
+      const index = selectedElement.id;
+      const { id, type } = elements[index];
+      if (action === "drawing" || action === "resizing") {
+        const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
+        updateElement(id, x1, y1, x2, y2, type);
+      }
     }
     setAction("none");
     setSelectedElement(null);
@@ -166,7 +189,7 @@ const Canvas = () => {
 
   return (
     <div>
-      <div className="container-buttons">
+      <div className="container-style-buttons">
         {styledButtonTypes.map((button) => (
           <StyleButtons
             key={button.id}
@@ -176,6 +199,9 @@ const Canvas = () => {
             onClick={() => setToolType(button.id)}
           />
         ))}
+      </div>
+      <div className="container-undo-redo-buttons">
+        <RedoUndoButtons undo={undo} redo={redo} />
       </div>
       <canvas
         id="canvas"
