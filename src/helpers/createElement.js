@@ -2,7 +2,7 @@ import rough from "roughjs/bundled/rough.esm";
 
 const elementGenerator = rough.generator();
 
-function createElement(id, x1, y1, x2, y2, type) {
+const createElement = (id, x1, y1, x2, y2, type) => {
   switch (type) {
     case "line":
     case "rectangle":
