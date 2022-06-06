@@ -61,7 +61,7 @@ const positionWithinElement = (x, y, element) => {
   }
 };
 
-function getElementAtPosition(x, y, elements) {
+const getElementAtPosition = (x, y, elements) => {
   return elements
     .map((element) => ({
       ...element,
