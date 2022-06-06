@@ -8,7 +8,7 @@ import createElement from "../helpers/createElement";
 import distanceCalculater from "../helpers/distanceCalculater";
 import cursorChangerForPositions from "../helpers/cursorChangerForPositions";
 import adjustElementCoordinates from "../helpers/adjustElementCoordinates";
-import resizedCoodinates from "../helpers/resizedCoordinates";
+import resizedCoordinates from "../helpers/resizedCoordinates";
 
 import "./Canvas.scss";
 import styledButtonTypes from "../helpers/styledButtonTypes";
@@ -250,7 +250,7 @@ const Canvas = () => {
       }
     } else if (action === "resizing") {
       const { id, type, position, ...coordinates } = selectedElement;
-      const { x1, y1, x2, y2 } = resizedCoodinates(
+      const { x1, y1, x2, y2 } = resizedCoordinates(
         clientX,
         clientY,
         position,
