@@ -13,9 +13,11 @@ const createElement = (id, x1, y1, x2, y2, type) => {
       return { id, x1, y1, x2, y2, type, roughElement };
     case "pencil":
       return { id, type, points: [{ x: x1, y: y1 }] };
+    case "text":
+      return { id, type, x1, y1, x2, y2, text: "" };
     default:
-      throw new Error(`Type not recognized: ${type}`);
+      throw new Error(`Type not recognised: ${type}`);
   }
-}
+};
 
 export default createElement;
