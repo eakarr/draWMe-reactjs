@@ -1,11 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useHistory } from "../hooks/useHistory";
 import rough from "roughjs/bundled/rough.esm";
-import getStroke from "perfect-freehand";
 import StyleButtons from "./StyleButtons";
 
 import createElement from "../helpers/createElement";
-import distanceCalculater from "../helpers/distanceCalculater";
+import getElementAtPosition from "../helpers/getElementAtPosition";
+import drawElement from "../helpers/drawElement";
+import adjustmentRequired from "../helpers/adjustmentRequired";
 import cursorChangerForPositions from "../helpers/cursorChangerForPositions";
 import adjustElementCoordinates from "../helpers/adjustElementCoordinates";
 import resizedCoordinates from "../helpers/resizedCoordinates";
@@ -13,109 +14,6 @@ import resizedCoordinates from "../helpers/resizedCoordinates";
 import "./Canvas.scss";
 import styledButtonTypes from "../helpers/styledButtonTypes";
 import RedoUndoButtons from "./RedoUndoButtons";
-
-// nearPoint function allows us to capturing the points of the drawing with an offset like < 5.
-const nearPoint = (x, y, x1, y1, name) => {
-  return Math.abs(x - x1) < 5 && Math.abs(y - y1) < 5 ? name : null; // We are giving some offset so that we can easily click on the line.
-};
-
-const onLine = (x1, y1, x2, y2, x, y, maxDistance = 1) => {
-  const a = { x: x1, y: y1 };
-  const b = { x: x2, y: y2 };
-  const c = { x, y };
-  const offset =
-    distanceCalculater(a, b) -
-    (distanceCalculater(a, c) + distanceCalculater(b, c));
-  return Math.abs(offset) < maxDistance ? "inside" : null; // We are giving some offset so that we can easily click on the line.
-};
-
-// isWithinElement function allows us to get the point where we clicked between the max min values of x and y.
-const positionWithinElement = (x, y, element) => {
-  const { type, x1, x2, y1, y2 } = element;
-  switch (type) {
-    case "line":
-      // This is for capturing the line
-      const on = onLine(x1, y1, x2, y2, x, y);
-      const start = nearPoint(x, y, x1, y1, "start");
-      const end = nearPoint(x, y, x2, y2, "end");
-      return start || end || on;
-    case "rectangle":
-      // This is for capturing the rectangle
-      const topLeft = nearPoint(x, y, x1, y1, "topLeft");
-      const topRight = nearPoint(x, y, x2, y1, "topRight");
-      const bottomLeft = nearPoint(x, y, x1, y2, "bottomLeft");
-      const bottomRight = nearPoint(x, y, x2, y2, "bottomRight");
-      const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
-      return topLeft || topRight || bottomLeft || bottomRight || inside;
-    case "pencil":
-      const betweenAnyPoint = element.points.some((point, index) => {
-        const nextPoint = element.points[index + 1];
-        if (!nextPoint) return false;
-        return (
-          onLine(point.x, point.y, nextPoint.x, nextPoint.y, x, y, 5) != null
-        );
-      });
-      return betweenAnyPoint ? "inside" : null; // We don't need the start and end points because the resize function won't be implemented on free hand skecth.
-    case "text":
-      return x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
-    default:
-      throw new Error(`Type not recognised: ${type}`);
-  }
-};
-
-const getElementAtPosition = (x, y, elements) => {
-  return elements
-    .map((element) => ({
-      ...element,
-      position: positionWithinElement(x, y, element),
-    }))
-    .find((element) => element.position !== null);
-};
-
-const getSvgPathFromStroke = (stroke) => {
-  if (!stroke.length) return "";
-
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length];
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
-      return acc;
-    },
-    ["M", ...stroke[0], "Q"]
-  );
-
-  d.push("Z");
-  return d.join(" ");
-};
-
-const drawElement = (roughCanvas, context, element) => {
-  switch (element.type) {
-    case "line":
-    case "rectangle":
-      roughCanvas.draw(element.roughElement);
-      break;
-    case "pencil":
-      // Perfect Freehand library needs.
-      // Size and everything can be changed from here by adding an option part. The object inside of the getStroke() is where your customization goes.
-      const stroke = getSvgPathFromStroke(
-        getStroke(element.points, { size: 4 })
-      );
-      context.fill(new Path2D(stroke));
-      break;
-    case "text":
-      context.textBaseLine = "top";
-      context.font = "24px sans-serif";
-      context.fillText(element.text, element.x1, element.y1);
-      break;
-    default:
-      throw new Error(`Type is not recognised: ${element.type}`);
-  }
-};
-
-// If the type selected either line or rectangle then adjustment is required.
-const adjustmentRequired = (type) => {
-  return ["line", "rectangle"].includes(type);
-};
 
 const Canvas = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
