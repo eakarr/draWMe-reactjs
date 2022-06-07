@@ -13,7 +13,7 @@ const resizedCoodinates = (clientX, clientY, position, coordinates) => {
     case "end":
       return { x1, y1, x2: clientX, y2: clientY };
     default:
-      return null; // It should not get here...
+      return null;
   }
 };
 
