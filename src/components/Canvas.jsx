@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useHistory } from "../hooks/useHistory";
 import rough from "roughjs/bundled/rough.esm";
 import getStroke from "perfect-freehand";
@@ -56,8 +56,10 @@ const positionWithinElement = (x, y, element) => {
         );
       });
       return betweenAnyPoint ? "inside" : null; // We don't need the start and end points because the resize function won't be implemented on free hand skecth.
+    case "text":
+      return x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
     default:
-      throw new Error(`Type is not recognised: ${type}`);
+      throw new Error(`Type not recognised: ${type}`);
   }
 };
 
@@ -68,7 +70,7 @@ const getElementAtPosition = (x, y, elements) => {
       position: positionWithinElement(x, y, element),
     }))
     .find((element) => element.position !== null);
-}
+};
 
 const getSvgPathFromStroke = (stroke) => {
   if (!stroke.length) return "";
@@ -100,6 +102,11 @@ const drawElement = (roughCanvas, context, element) => {
       );
       context.fill(new Path2D(stroke));
       break;
+    case "text":
+      context.textBaseLine = "top";
+      context.font = "24px sans-serif";
+      context.fillText(element.text, element.x1, element.y1);
+      break;
     default:
       throw new Error(`Type is not recognised: ${element.type}`);
   }
@@ -107,7 +114,7 @@ const drawElement = (roughCanvas, context, element) => {
 
 // If the type selected either line or rectangle then adjustment is required.
 const adjustmentRequired = (type) => {
-  ["line", "rectangle"].includes(type);
+  return ["line", "rectangle"].includes(type);
 };
 
 const Canvas = () => {
@@ -115,6 +122,7 @@ const Canvas = () => {
   const [action, setAction] = useState("none");
   const [toolType, setToolType] = useState("pencil");
   const [selectedElement, setSelectedElement] = useState(null);
+  const textAreaRef = useRef();
 
   ////////////////////////////////////////////////////////////////////////////////////
 
@@ -125,8 +133,11 @@ const Canvas = () => {
 
     const roughCanvas = rough.canvas(canvas); // Initializing the RoughJS
 
-    elements.forEach((element) => drawElement(roughCanvas, context, element));
-  }, [elements]);
+    elements.forEach((element) => {
+      if (action === "writing" && selectedElement.id === element.id) return;
+      drawElement(roughCanvas, context, element);
+    });
+  }, [elements, action, selectedElement]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
   useEffect(() => {
@@ -146,8 +157,17 @@ const Canvas = () => {
     };
   }, [undo, redo]);
 
+  // This is for text area focusing.
+  useEffect(() => {
+    const textArea = textAreaRef.current;
+    if (action === "writing") {
+      textArea.focus();
+      textArea.value = selectedElement.text;
+    }
+  }, [action, selectedElement]);
+
   // updateElement function allows us to update the x and y coodinates for moving elements.
-  const updateElement = (id, x1, y1, x2, y2, type) => {
+  const updateElement = (id, x1, y1, x2, y2, type, options) => {
     const copyElementsState = [...elements];
 
     switch (type) {
@@ -161,8 +181,20 @@ const Canvas = () => {
           { x: x2, y: y2 },
         ];
         break;
+      case "text":
+        // measureText allows us to get the width of the text written.
+        const textWidth = document
+          .getElementById("canvas")
+          .getContext("2d")
+          .measureText(options.text).width;
+        const textHeight = 24;
+        copyElementsState[id] = {
+          ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, type),
+          text: options.text,
+        };
+        break;
       default:
-        throw new Error(`Type is not recognised: ${type}`);
+        throw new Error(`Type not recognised: ${type}`);
     }
 
     setElements(copyElementsState, true);
@@ -171,6 +203,8 @@ const Canvas = () => {
   ////////////////////////////////////////////////////////////////////////////////////
 
   const mouseDownHandler = (event) => {
+    if (action === "writing") return;
+
     const { clientX, clientY } = event;
     if (toolType === "selection") {
       const element = getElementAtPosition(clientX, clientY, elements);
@@ -206,7 +240,7 @@ const Canvas = () => {
       setElements((prevState) => [...prevState, element]);
       setSelectedElement(element);
 
-      setAction("drawing");
+      setAction(toolType === "text" ? "writing" : "drawing");
     }
   };
 
@@ -241,12 +275,22 @@ const Canvas = () => {
         };
         setElements(copyElementsState, true);
       } else {
-        const { id, x1, y1, x2, y2, type, offsetX, offsetY } = selectedElement;
+        const { id, x1, x2, y1, y2, type, offsetX, offsetY } = selectedElement;
         const width = x2 - x1;
         const height = y2 - y1;
         const newX1 = clientX - offsetX;
         const newY1 = clientY - offsetY;
-        updateElement(id, newX1, newY1, newX1 + width, newY1 + height, type);
+        const options =
+          toolType === "text" ? { text: selectedElement.text } : {};
+        updateElement(
+          id,
+          newX1,
+          newY1,
+          newX1 + width,
+          newY1 + height,
+          type,
+          options
+        );
       }
     } else if (action === "resizing") {
       const { id, type, position, ...coordinates } = selectedElement;
@@ -262,8 +306,18 @@ const Canvas = () => {
 
   ////////////////////////////////////////////////////////////////////////////////////
 
-  const mouseUpHandler = () => {
+  const mouseUpHandler = (event) => {
+    const { clientX, clientY } = event;
     if (selectedElement) {
+      if (
+        selectedElement.type === "text" &&
+        clientX - selectedElement.offsetX === selectedElement.x1 &&
+        clientY - selectedElement.offsetY === selectedElement.y1
+      ) {
+        setAction("writing");
+        return;
+      }
+
       const index = selectedElement.id;
       const { id, type } = elements[index];
       if (
@@ -274,8 +328,18 @@ const Canvas = () => {
         updateElement(id, x1, y1, x2, y2, type);
       }
     }
+
+    if (action === "writing") return;
+
     setAction("none");
     setSelectedElement(null);
+  };
+
+  const blurHandler = (event) => {
+    const { id, x1, y1, type } = selectedElement;
+    setAction("none");
+    setSelectedElement(null);
+    updateElement(id, x1, y1, null, null, type, { text: event.target.value });
   };
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -296,6 +360,26 @@ const Canvas = () => {
       <div className="container-undo-redo-buttons">
         <RedoUndoButtons undo={undo} redo={redo} />
       </div>
+      {action === "writing" ? (
+        <textarea
+          ref={textAreaRef}
+          onBlur={blurHandler}
+          style={{
+            position: "fixed",
+            top: selectedElement.y1 - 2,
+            left: selectedElement.x1,
+            font: "24px sans-serif",
+            margin: 0,
+            padding: 0,
+            border: 0,
+            outline: 0,
+            resize: "auto",
+            overflow: "hidden",
+            whiteSpace: "pre",
+            background: "transparent",
+          }}
+        />
+      ) : null}
       <canvas
         id="canvas"
         width={window.innerWidth}
