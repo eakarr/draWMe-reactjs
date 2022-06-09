@@ -255,9 +255,7 @@ const Canvas = () => {
           />
         ))}
       </div>
-      <div className="container-undo-redo-buttons">
-        <RedoUndoButtons undo={undo} redo={redo} />
-      </div>
+      <RedoUndoButtons undo={undo} redo={redo} />
       {action === "writing" ? (
         <textarea
           ref={textAreaRef}
