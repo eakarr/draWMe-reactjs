@@ -16,7 +16,7 @@ const drawElement = (roughCanvas, context, element) => {
       context.fill(new Path2D(stroke));
       break;
     case "text":
-      context.textBaseLine = "top";
+      context.textBaseline = "top";
       context.font = "24px sans-serif";
       context.fillText(element.text, element.x1, element.y1);
       break;
