@@ -179,7 +179,7 @@ const Canvas = () => {
         const newX1 = clientX - offsetX;
         const newY1 = clientY - offsetY;
         const options =
-          toolType === "text" ? { text: selectedElement.text } : {};
+          selectedElement.type === "text" ? { text: selectedElement.text } : {};
         updateElement(
           id,
           newX1,
@@ -233,7 +233,7 @@ const Canvas = () => {
     setSelectedElement(null);
   };
 
-  const blurHandler = (event) => {
+  const onClickHandler = (event) => {
     const { id, x1, y1, type } = selectedElement;
     setAction("none");
     setSelectedElement(null);
@@ -261,10 +261,10 @@ const Canvas = () => {
       {action === "writing" ? (
         <textarea
           ref={textAreaRef}
-          onBlur={blurHandler}
+          onClick={onClickHandler}
           style={{
             position: "fixed",
-            top: selectedElement.y1 - 2,
+            top: selectedElement.y1 - 3,
             left: selectedElement.x1,
             font: "24px sans-serif",
             margin: 0,
