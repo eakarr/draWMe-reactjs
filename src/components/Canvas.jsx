@@ -125,8 +125,20 @@ const Canvas = () => {
           setAction("resizing");
         }
       }
-    } else {
+    }
+    // else if (toolType === "eraser") {
+    //   const element = getElementAtPosition(clientX, clientY, elements);
+    //   console.log("Selected Element: ", element);
+    //   console.log("Before Deleting: ", elements);
+    //   const copyOfElements = elements;
+    //   const deletedElements = () => copyOfElements.splice(element.id, 1);
+    //   deletedElements()
+    //   setElements(copyOfElements)
+    //   console.log("After Deleting: ", elements);
+    // }
+    else {
       const id = elements.length;
+      // The reason that we are sending 2 times clientX and clientY is because when you click, you are creating all of your coordinates. After the creation,  we are updating the second clientX and clientY.
       const element = createElement(
         id,
         clientX,
