@@ -3,7 +3,7 @@ import squareIcon from "../assets/square-icon.svg";
 import lineIcon from "../assets/line-icon.svg";
 import pencilIcon from "../assets/pencil-icon.svg";
 import textIcon from "../assets/text-icon.svg";
-import eraserIcon from "../assets/eraser-icon.svg";
+// import eraserIcon from "../assets/eraser-icon.svg";
 
 const styledButtonTypes = [
   { id: "selection", icon: mouseIcon },
@@ -11,7 +11,7 @@ const styledButtonTypes = [
   { id: "rectangle", icon: squareIcon },
   { id: "pencil", icon: pencilIcon },
   { id: "text", icon: textIcon },
-  { id: "eraser", icon: eraserIcon },
+  // { id: "eraser", icon: eraserIcon },
 ];
 
 export default styledButtonTypes;
