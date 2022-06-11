@@ -14,6 +14,7 @@ import resizedCoordinates from "../helpers/resizedCoordinates";
 import "./Canvas.scss";
 import styledButtonTypes from "../helpers/styledButtonTypes";
 import RedoUndoButtons from "./RedoUndoButtons";
+import BurgerButton from "./BurgerButton";
 
 const Canvas = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
@@ -267,6 +268,7 @@ const Canvas = () => {
           />
         ))}
       </div>
+      {toolType === "pencil" ? <BurgerButton /> : null}
       <RedoUndoButtons undo={undo} redo={redo} />
       {action === "writing" ? (
         <textarea
