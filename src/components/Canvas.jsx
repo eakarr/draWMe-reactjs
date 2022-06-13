@@ -1,7 +1,14 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useHistory } from "../hooks/useHistory";
+import { StyleOptionsContext } from "../context/StyleOptionsContext";
 import rough from "roughjs/bundled/rough.esm";
-import StyleButtons from "./StyleButtons";
+import ToolButtons from "./ToolButtons";
 
 import createElement from "../helpers/createElement";
 import getElementAtPosition from "../helpers/getElementAtPosition";
@@ -22,6 +29,8 @@ const Canvas = () => {
   const [toolType, setToolType] = useState("pencil");
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef();
+  const { pencilSize, pencilThinning, pencilStreamline, pencilSmoothing } =
+    useContext(StyleOptionsContext);
 
   ////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,9 +43,25 @@ const Canvas = () => {
 
     elements.forEach((element) => {
       if (action === "writing" && selectedElement.id === element.id) return;
-      drawElement(roughCanvas, context, element);
+      drawElement(
+        roughCanvas,
+        context,
+        element,
+        pencilSize,
+        pencilThinning,
+        pencilStreamline,
+        pencilSmoothing
+      );
     });
-  }, [elements, action, selectedElement]);
+  }, [
+    elements,
+    action,
+    selectedElement,
+    pencilSize,
+    pencilThinning,
+    pencilStreamline,
+    pencilSmoothing,
+  ]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
   useEffect(() => {
@@ -259,7 +284,7 @@ const Canvas = () => {
     <div>
       <div className="container-style-buttons">
         {styledButtonTypes.map((button) => (
-          <StyleButtons
+          <ToolButtons
             key={button.id}
             toolType={toolType}
             src={button.icon}
@@ -268,7 +293,9 @@ const Canvas = () => {
           />
         ))}
       </div>
+
       {toolType === "pencil" ? <BurgerButton /> : null}
+
       <RedoUndoButtons undo={undo} redo={redo} />
       {action === "writing" ? (
         <textarea
