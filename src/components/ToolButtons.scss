@@ -1,0 +1,26 @@
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(207, 204, 204);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px;
+  border-radius: 0.5rem;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 0.4rem 0;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    transition: all 400ms ease;
+    background-color: #FFDC60;
+  }
+  &:focus {
+    transition: all 400ms ease;
+    background-color: #FFDC60;
+  }
+  &.active {
+    transition: all 400ms ease;
+    background-color: #FFDC60;
+  }
+}
