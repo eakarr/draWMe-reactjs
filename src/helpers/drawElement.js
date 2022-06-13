@@ -8,7 +8,9 @@ const drawElement = (
   pencilSize,
   pencilThinning,
   pencilStreamline,
-  pencilSmoothing
+  pencilSmoothing,
+  pencilTaperStart,
+  pencilTaperEnd
 ) => {
   switch (element.type) {
     case "line":
@@ -24,6 +26,14 @@ const drawElement = (
           thinning: pencilThinning,
           streamline: pencilStreamline,
           smoothing: pencilSmoothing,
+          start: {
+            cap: true,
+            taper: pencilTaperStart * 100,
+          },
+          end: {
+            cap: true,
+            taper: pencilTaperEnd * 100,
+          },
         })
       );
       context.fill(new Path2D(stroke));
