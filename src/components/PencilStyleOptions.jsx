@@ -13,6 +13,10 @@ const PencilStyleOptions = () => {
     setPencilStreamline,
     pencilSmoothing,
     setPencilSmoothing,
+    pencilTaperStart,
+    setPencilTaperStart,
+    pencilTaperEnd,
+    setPencilTaperEnd
   } = useContext(StyleOptionsContext);
 
   const pencilStylingFeatures = [
@@ -39,6 +43,18 @@ const PencilStyleOptions = () => {
       labelName: "Smoothing",
       featureType: pencilSmoothing,
       setFeatureType: setPencilSmoothing,
+    },
+    {
+      id: "Taper Start",
+      labelName: "Taper Start",
+      featureType: pencilTaperStart,
+      setFeatureType: setPencilTaperStart,
+    },
+    {
+      id: "Taper End",
+      labelName: "Taper End",
+      featureType: pencilTaperEnd,
+      setFeatureType: setPencilTaperEnd,
     },
   ];
 
