@@ -6,10 +6,18 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px;
   border-radius: 1rem;
   top: 1%;
-  left: 0.3rem;
+  margin-left: 0.3rem;
+  animation: slideRight 0.5s forwards;
 }
-
-.icon-container {
+@keyframes slideRight {
+  0% {
+    left: -100vw;
+  }
+  100% {
+    left: 0;
+  }
+}
+.burger {
   display: flex;
   justify-content: center;
   align-items: center;
