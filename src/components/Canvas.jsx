@@ -29,8 +29,14 @@ const Canvas = () => {
   const [toolType, setToolType] = useState("pencil");
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef();
-  const { pencilSize, pencilThinning, pencilStreamline, pencilSmoothing } =
-    useContext(StyleOptionsContext);
+  const {
+    pencilSize,
+    pencilThinning,
+    pencilStreamline,
+    pencilSmoothing,
+    pencilTaperStart,
+    pencilTaperEnd,
+  } = useContext(StyleOptionsContext);
 
   ////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,7 +56,9 @@ const Canvas = () => {
         pencilSize,
         pencilThinning,
         pencilStreamline,
-        pencilSmoothing
+        pencilSmoothing,
+        pencilTaperStart,
+        pencilTaperEnd
       );
     });
   }, [
@@ -61,6 +69,8 @@ const Canvas = () => {
     pencilThinning,
     pencilStreamline,
     pencilSmoothing,
+    pencilTaperStart,
+    pencilTaperEnd,
   ]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
