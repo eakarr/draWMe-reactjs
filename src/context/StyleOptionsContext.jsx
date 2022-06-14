@@ -9,6 +9,7 @@ export const StyleOptionsProvider = ({ children }) => {
   const [pencilSmoothing, setPencilSmoothing] = useState(0.5);
   const [pencilTaperStart, setPencilTaperStart] = useState(0.5);
   const [pencilTaperEnd, setPencilTaperEnd] = useState(0.5);
+  const [pencilColor, setPencilColor] = useState("black");
 
   return (
     <StyleOptionsContext.Provider
@@ -25,6 +26,8 @@ export const StyleOptionsProvider = ({ children }) => {
         setPencilTaperStart,
         pencilTaperEnd,
         setPencilTaperEnd,
+        pencilColor,
+        setPencilColor,
       }}
     >
       {children}
