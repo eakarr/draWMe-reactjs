@@ -16,7 +16,9 @@ const PencilStyleOptions = () => {
     pencilTaperStart,
     setPencilTaperStart,
     pencilTaperEnd,
-    setPencilTaperEnd
+    setPencilTaperEnd,
+    pencilColor,
+    setPencilColor,
   } = useContext(StyleOptionsContext);
 
   const pencilStylingFeatures = [
@@ -58,6 +60,37 @@ const PencilStyleOptions = () => {
     },
   ];
 
+  const pencilColors = [
+    {
+      id: "black",
+      colorType: "black",
+    },
+    {
+      id: "red",
+      colorType: "red",
+    },
+    {
+      id: "blue",
+      colorType: "blue",
+    },
+    {
+      id: "green",
+      colorType: "green",
+    },
+    {
+      id: "purple",
+      colorType: "purple",
+    },
+    {
+      id: "yellow",
+      colorType: "yellow",
+    },
+    {
+      id: "gainsboro",
+      colorType: "gainsboro",
+    },
+  ];
+
   const increaseSizeButtonHandler = (pencilStyleType, setPencilStyleType) => {
     if (pencilStyleType <= 0.98) {
       setPencilStyleType((prevState) => prevState + 0.02);
@@ -80,17 +113,6 @@ const PencilStyleOptions = () => {
           <div className="pencil-style-option-button-container">
             <button
               onClick={() =>
-                increaseSizeButtonHandler(
-                  style.featureType,
-                  style.setFeatureType
-                )
-              }
-            >
-              +
-            </button>
-            <span>{(style.featureType).toFixed(2)}</span>
-            <button
-              onClick={() =>
                 decreaseSizeButtonHandler(
                   style.featureType,
                   style.setFeatureType
@@ -99,9 +121,37 @@ const PencilStyleOptions = () => {
             >
               -
             </button>
+            <span>{style.featureType.toFixed(2)}</span>
+            <button
+              onClick={() =>
+                increaseSizeButtonHandler(
+                  style.featureType,
+                  style.setFeatureType
+                )
+              }
+            >
+              +
+            </button>
           </div>
         </div>
       ))}
+      <div className="pencil-style-options">
+        <label htmlFor="Colors">Colors</label>
+        <div className="pencil-colors-container">
+          {pencilColors.map((color) => (
+            <div
+              key={color.id}
+              style={{ background: color.colorType }}
+              onClick={() => setPencilColor(color.colorType)}
+              className={
+                pencilColor === color.id
+                  ? "pencil-color-box active"
+                  : "pencil-color-box"
+              }
+            ></div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
