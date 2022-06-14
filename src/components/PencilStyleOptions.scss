@@ -20,35 +20,23 @@
 
 .pencil-style-options {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0.5rem;
   padding: 0.2rem;
   border-bottom: 1px solid gainsboro;
 
-  label {
-    margin-right: 2.5rem;
+  span {
+    width: 1rem;
+    margin-left: 1rem;
   }
 
-  .pencil-style-option-button-container {
-    display: flex;
-    align-items: center;
-    margin-right: 0.4rem;
+  input {
+    margin-right: 1rem;
+  }
 
-    button {
-      margin: 0 1rem;
-      background-color: rgb(207, 204, 204);
-      box-shadow: rgba(0, 0, 0, 0.05) 0px 3px 8px;
-      border-radius: 0.5rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      border: none;
-      cursor: pointer;
-      &:hover {
-        transition: all 400ms ease;
-        background-color: #ffdc60;
-      }
-    }
+  label {
+    width: 5rem;
+    margin-right: 1rem;
   }
 }
 
