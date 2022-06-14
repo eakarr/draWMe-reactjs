@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { StyleOptionsContext } from "../context/StyleOptionsContext";
+import {pencilColorsTypes} from "../helpers/pencilColorsTypes";
 
 import "./PencilStyleOptions.scss";
 
@@ -60,37 +61,6 @@ const PencilStyleOptions = () => {
     },
   ];
 
-  const pencilColors = [
-    {
-      id: "black",
-      colorType: "black",
-    },
-    {
-      id: "red",
-      colorType: "red",
-    },
-    {
-      id: "blue",
-      colorType: "blue",
-    },
-    {
-      id: "green",
-      colorType: "green",
-    },
-    {
-      id: "purple",
-      colorType: "purple",
-    },
-    {
-      id: "yellow",
-      colorType: "yellow",
-    },
-    {
-      id: "gainsboro",
-      colorType: "gainsboro",
-    },
-  ];
-
   const increaseSizeButtonHandler = (pencilStyleType, setPencilStyleType) => {
     if (pencilStyleType <= 0.98) {
       setPencilStyleType((prevState) => prevState + 0.02);
@@ -138,7 +108,7 @@ const PencilStyleOptions = () => {
       <div className="pencil-style-options">
         <label htmlFor="Colors">Colors</label>
         <div className="pencil-colors-container">
-          {pencilColors.map((color) => (
+          {pencilColorsTypes.map((color) => (
             <div
               key={color.id}
               style={{ background: color.colorType }}
