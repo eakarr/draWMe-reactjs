@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { StyleOptionsContext } from "../context/StyleOptionsContext";
-import {pencilColorsTypes} from "../helpers/pencilColorsTypes";
+import { pencilColorsTypes } from "../helpers/pencilColorsTypes";
 
 import "./PencilStyleOptions.scss";
 
@@ -22,89 +22,86 @@ const PencilStyleOptions = () => {
     setPencilColor,
   } = useContext(StyleOptionsContext);
 
-  const pencilStylingFeatures = [
-    {
-      id: "Size",
-      labelName: "Size",
-      featureType: pencilSize,
-      setFeatureType: setPencilSize,
-    },
-    {
-      id: "Thinning",
-      labelName: "Thinning",
-      featureType: pencilThinning,
-      setFeatureType: setPencilThinning,
-    },
-    {
-      id: "Streamline",
-      labelName: "Streamline",
-      featureType: pencilStreamline,
-      setFeatureType: setPencilStreamline,
-    },
-    {
-      id: "Smoothing",
-      labelName: "Smoothing",
-      featureType: pencilSmoothing,
-      setFeatureType: setPencilSmoothing,
-    },
-    {
-      id: "Taper Start",
-      labelName: "Taper Start",
-      featureType: pencilTaperStart,
-      setFeatureType: setPencilTaperStart,
-    },
-    {
-      id: "Taper End",
-      labelName: "Taper End",
-      featureType: pencilTaperEnd,
-      setFeatureType: setPencilTaperEnd,
-    },
-  ];
-
-  const increaseSizeButtonHandler = (pencilStyleType, setPencilStyleType) => {
-    if (pencilStyleType <= 0.98) {
-      setPencilStyleType((prevState) => prevState + 0.02);
-    }
-    return;
-  };
-
-  const decreaseSizeButtonHandler = (pencilStyleType, setPencilStyleType) => {
-    if (pencilStyleType >= 0.04) {
-      setPencilStyleType((prevState) => prevState - 0.02);
-    }
-    return;
-  };
-
   return (
     <div className="pencil-style-options-container">
-      {pencilStylingFeatures.map((style) => (
-        <div className="pencil-style-options" key={Math.random()}>
-          <label htmlFor="Size">{style.labelName}</label>
-          <div className="pencil-style-option-button-container">
-            <button
-              onClick={() =>
-                decreaseSizeButtonHandler(
-                  style.featureType,
-                  style.setFeatureType
-                )
-              }
-            >
-              -
-            </button>
-            <span>{style.featureType.toFixed(2)}</span>
-            <button
-              onClick={() =>
-                increaseSizeButtonHandler(
-                  style.featureType,
-                  style.setFeatureType
-                )
-              }
-            >
-              +
-            </button>
-          </div>
-        </div>
-      ))}
+      <div className="pencil-style-options">
+        <label htmlFor="Size">Size</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilSize}
+          onChange={(event) => {
+            setPencilSize(event.target.value);
+          }}
+        />
+        <span>{pencilSize}</span>
+      </div>
+      <div className="pencil-style-options">
+        <label htmlFor="Thinning">Thinning</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilThinning}
+          onChange={(event) => {
+            setPencilThinning(event.target.value);
+          }}
+        />
+        <span>{pencilThinning}</span>
+      </div>
+      <div className="pencil-style-options">
+        <label htmlFor="Streamline">Streamline</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilStreamline}
+          onChange={(event) => {
+            setPencilStreamline(event.target.value);
+          }}
+        />
+        <span>{pencilStreamline}</span>
+      </div>
+      <div className="pencil-style-options">
+        <label htmlFor="Smoothing">Smoothing</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilSmoothing}
+          onChange={(event) => {
+            setPencilSmoothing(event.target.value);
+          }}
+        />
+        <span>{pencilThinning}</span>
+      </div>
+      <div className="pencil-style-options">
+        <label htmlFor="Taper Start">Taper Start</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilTaperStart}
+          onChange={(event) => {
+            setPencilTaperStart(event.target.value);
+          }}
+        />
+        <span>{pencilTaperStart}</span>
+      </div>
+      <div className="pencil-style-options">
+        <label htmlFor="Taper End">Taper End</label>
+        <input
+          type="range"
+          min={1}
+          max={100}
+          value={pencilTaperEnd}
+          onChange={(event) => {
+            setPencilTaperEnd(event.target.value);
+          }}
+        />
+        <span>{pencilTaperEnd}</span>
+      </div>
       <div className="pencil-style-options">
         <label htmlFor="Colors">Colors</label>
         <div className="pencil-colors-container">
