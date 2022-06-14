@@ -36,6 +36,7 @@ const Canvas = () => {
     pencilSmoothing,
     pencilTaperStart,
     pencilTaperEnd,
+    pencilColor,
   } = useContext(StyleOptionsContext);
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,8 @@ const Canvas = () => {
         pencilStreamline,
         pencilSmoothing,
         pencilTaperStart,
-        pencilTaperEnd
+        pencilTaperEnd,
+        pencilColor
       );
     });
   }, [
@@ -71,6 +73,7 @@ const Canvas = () => {
     pencilSmoothing,
     pencilTaperStart,
     pencilTaperEnd,
+    pencilColor,
   ]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
