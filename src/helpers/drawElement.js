@@ -23,17 +23,17 @@ const drawElement = (
       // Size and everything can be changed from here by adding an option part. The object inside of the getStroke() is where your customization goes.
       const stroke = getSvgPathFromStroke(
         getStroke(element.points, {
-          size: pencilSize * 100,
-          thinning: pencilThinning,
-          streamline: pencilStreamline,
-          smoothing: pencilSmoothing,
+          size: pencilSize,
+          thinning: pencilThinning / 100,
+          streamline: pencilStreamline / 100,
+          smoothing: pencilSmoothing / 100,
           start: {
             cap: true,
-            taper: pencilTaperStart * 100,
+            taper: pencilTaperStart,
           },
           end: {
             cap: true,
-            taper: pencilTaperEnd * 100,
+            taper: pencilTaperEnd,
           },
         })
       );
