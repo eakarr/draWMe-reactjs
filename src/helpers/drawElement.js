@@ -10,7 +10,8 @@ const drawElement = (
   pencilStreamline,
   pencilSmoothing,
   pencilTaperStart,
-  pencilTaperEnd
+  pencilTaperEnd,
+  pencilColor
 ) => {
   switch (element.type) {
     case "line":
@@ -36,6 +37,7 @@ const drawElement = (
           },
         })
       );
+      context.fillStyle = pencilColor;
       context.fill(new Path2D(stroke));
       break;
     case "text":
