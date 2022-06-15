@@ -74,7 +74,7 @@ const PencilStyleOptions = () => {
             setPencilSmoothing(event.target.value);
           }}
         />
-        <span>{pencilThinning}</span>
+        <span>{pencilSmoothing}</span>
       </div>
       <div className="pencil-style-options">
         <label htmlFor="Taper Start">Taper Start</label>
