@@ -22,86 +22,67 @@ const PencilStyleOptions = () => {
     setPencilColor,
   } = useContext(StyleOptionsContext);
 
+  const pencilStylingTypes = [
+    {
+      id: "Size",
+      value: pencilSize,
+      onChange: (event) => {
+        setPencilSize(event.target.value);
+      },
+    },
+    {
+      id: "Thinning",
+      value: pencilThinning,
+      onChange: (event) => {
+        setPencilThinning(event.target.value);
+      },
+    },
+    {
+      id: "Streamline",
+      value: pencilStreamline,
+      onChange: (event) => {
+        setPencilStreamline(event.target.value);
+      },
+    },
+    {
+      id: "Smoothing",
+      value: pencilSmoothing,
+      onChange: (event) => {
+        setPencilSmoothing(event.target.value);
+      },
+    },
+    {
+      id: "Taper Start",
+      value: pencilTaperStart,
+      onChange: (event) => {
+        setPencilTaperStart(event.target.value);
+      },
+    },
+    {
+      id: "Taper End",
+      value: pencilTaperEnd,
+      onChange: (event) => {
+        setPencilTaperEnd(event.target.value);
+      },
+    },
+  ];
+
   return (
     <div className="pencil-style-options-container">
-      <div className="pencil-style-options">
-        <label htmlFor="Size">Size</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilSize}
-          onChange={(event) => {
-            setPencilSize(event.target.value);
-          }}
-        />
-        <span>{pencilSize}</span>
-      </div>
-      <div className="pencil-style-options">
-        <label htmlFor="Thinning">Thinning</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilThinning}
-          onChange={(event) => {
-            setPencilThinning(event.target.value);
-          }}
-        />
-        <span>{pencilThinning}</span>
-      </div>
-      <div className="pencil-style-options">
-        <label htmlFor="Streamline">Streamline</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilStreamline}
-          onChange={(event) => {
-            setPencilStreamline(event.target.value);
-          }}
-        />
-        <span>{pencilStreamline}</span>
-      </div>
-      <div className="pencil-style-options">
-        <label htmlFor="Smoothing">Smoothing</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilSmoothing}
-          onChange={(event) => {
-            setPencilSmoothing(event.target.value);
-          }}
-        />
-        <span>{pencilSmoothing}</span>
-      </div>
-      <div className="pencil-style-options">
-        <label htmlFor="Taper Start">Taper Start</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilTaperStart}
-          onChange={(event) => {
-            setPencilTaperStart(event.target.value);
-          }}
-        />
-        <span>{pencilTaperStart}</span>
-      </div>
-      <div className="pencil-style-options">
-        <label htmlFor="Taper End">Taper End</label>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={pencilTaperEnd}
-          onChange={(event) => {
-            setPencilTaperEnd(event.target.value);
-          }}
-        />
-        <span>{pencilTaperEnd}</span>
-      </div>
+      {pencilStylingTypes.map((type) => (
+        <div className="pencil-style-options" key={type.id}>
+          <label htmlFor={type.id}>{type.id}</label>
+          <input
+            type="range"
+            min={1}
+            max={100}
+            value={type.value}
+            onChange={type.onChange}
+          />
+          <span>{type.value}</span>
+        </div>
+      ))}
+
       <div className="pencil-style-options">
         <label htmlFor="Colors">Colors</label>
         <div className="pencil-colors-container">
