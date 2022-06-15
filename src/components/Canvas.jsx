@@ -309,7 +309,8 @@ const Canvas = () => {
 
       {toolType === "pencil" ? <BurgerButton /> : null}
 
-      <RedoUndoButtons undo={undo} redo={redo} />
+      <RedoUndoButtons className={"container-undo-redo-buttons"} undo={undo} redo={redo} />
+
       {action === "writing" ? (
         <textarea
           ref={textAreaRef}
