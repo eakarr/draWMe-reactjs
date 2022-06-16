@@ -11,6 +11,14 @@ export const StyleOptionsProvider = ({ children }) => {
   const [pencilTaperEnd, setPencilTaperEnd] = useState(50);
   const [pencilColor, setPencilColor] = useState("black");
 
+  const [rectangleStrokeWidth, setRectangleStrokeWidth] = useState(1);
+  const [rectangleRoughness, setRectangleRoughness] = useState(1);
+  const [rectangleBowing, setRectangleBowing] = useState(1);
+  const [rectangleHachureGap, setRectangleHachureGap] = useState(8);
+  const [rectangleHachureAngle, setRectangleHachureAngle] = useState(1);
+  const [rectangleStrokeColor, setRectangleStrokeColor] = useState("black");
+  const [rectangleFill, setRectangleFill] = useState("transparent");
+
   return (
     <StyleOptionsContext.Provider
       value={{
@@ -28,6 +36,21 @@ export const StyleOptionsProvider = ({ children }) => {
         setPencilTaperEnd,
         pencilColor,
         setPencilColor,
+
+        rectangleStrokeWidth,
+        setRectangleStrokeWidth,
+        rectangleRoughness,
+        setRectangleRoughness,
+        rectangleBowing,
+        setRectangleBowing,
+        rectangleHachureGap,
+        setRectangleHachureGap,
+        rectangleHachureAngle,
+        setRectangleHachureAngle,
+        rectangleStrokeColor,
+        setRectangleStrokeColor,
+        rectangleFill,
+        setRectangleFill,
       }}
     >
       {children}
