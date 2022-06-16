@@ -307,7 +307,8 @@ const Canvas = () => {
         ))}
       </div>
 
-      {toolType === "pencil" ? <BurgerButton /> : null}
+      {toolType === "pencil" ? <BurgerButton toolType={toolType} /> : null}
+      {toolType === "rectangle" ? <BurgerButton toolType={toolType} /> : null}
 
       <RedoUndoButtons className={"container-undo-redo-buttons"} undo={undo} redo={redo} />
 
