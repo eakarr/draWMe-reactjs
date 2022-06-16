@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import PencilStyleOptions from "./PencilStyleOptions"
+import RectangleStyleOptions from "./RectangleStyleOptions";
 
 import burgerIcon from "../assets/burger-icon.svg";
 import "./BurgerButton.scss";
 
-const BurgerButton = () => {
+const BurgerButton = ({toolType}) => {
   const [toggle, setToggle] = useState(false);
 
   const toggleHandler = () => {
@@ -18,7 +19,8 @@ const BurgerButton = () => {
           <img src={burgerIcon} alt="burger" />
         </div>
       </div>
-      {toggle ? <PencilStyleOptions /> : null}
+      {toggle && toolType === "pencil" ? <PencilStyleOptions /> : null}
+      {toggle && toolType === "rectangle" ? <RectangleStyleOptions /> : null}
     </>
   );
 };
