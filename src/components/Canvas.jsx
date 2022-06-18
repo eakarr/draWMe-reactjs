@@ -37,7 +37,35 @@ const Canvas = () => {
     pencilTaperStart,
     pencilTaperEnd,
     pencilColor,
+    rectangleStrokeWidth,
+    rectangleRoughness,
+    rectangleBowing,
+    rectangleHachureGap,
+    rectangleHachureAngle,
+    rectangleStrokeColor,
+    rectangleFill,
+    lineStrokeWidth,
+    lineRoughness,
+    lineBowing,
+    lineStrokeColor,
   } = useContext(StyleOptionsContext);
+
+  let rectangleStyleOptions = {
+    strokeWidth: rectangleStrokeWidth,
+    roughness: rectangleRoughness,
+    bowing: rectangleBowing,
+    hachureGap: rectangleHachureGap,
+    hachureAngle: rectangleHachureAngle,
+    stroke: rectangleStrokeColor,
+    fill: rectangleFill,
+  };
+
+  let lineStyleOptions = {
+    strokeWidth: lineStrokeWidth,
+    roughness: lineRoughness,
+    bowing: lineBowing,
+    stroke: lineStrokeColor,
+  };
 
   ////////////////////////////////////////////////////////////////////////////////////
 
@@ -110,7 +138,16 @@ const Canvas = () => {
     switch (type) {
       case "line":
       case "rectangle":
-        copyElementsState[id] = createElement(id, x1, y1, x2, y2, type); // updating the element.
+        copyElementsState[id] = createElement(
+          id,
+          x1,
+          y1,
+          x2,
+          y2,
+          type,
+          lineStyleOptions,
+          rectangleStyleOptions
+        ); // updating the element.
         break;
       case "pencil":
         copyElementsState[id].points = [
@@ -309,8 +346,13 @@ const Canvas = () => {
 
       {toolType === "pencil" ? <BurgerButton toolType={toolType} /> : null}
       {toolType === "rectangle" ? <BurgerButton toolType={toolType} /> : null}
+      {toolType === "line" ? <BurgerButton toolType={toolType} /> : null}
 
-      <RedoUndoButtons className={"container-undo-redo-buttons"} undo={undo} redo={redo} />
+      <RedoUndoButtons
+        className={"container-undo-redo-buttons"}
+        undo={undo}
+        redo={redo}
+      />
 
       {action === "writing" ? (
         <textarea
