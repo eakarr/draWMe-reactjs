@@ -19,9 +19,15 @@ export const StyleOptionsProvider = ({ children }) => {
   const [rectangleStrokeColor, setRectangleStrokeColor] = useState("black");
   const [rectangleFill, setRectangleFill] = useState("transparent");
 
+  const [lineStrokeWidth, setLineStrokeWidth] = useState(1);
+  const [lineRoughness, setLineRoughness] = useState(1);
+  const [lineBowing, setLineBowing] = useState(1);
+  const [lineStrokeColor, setLineStrokeColor] = useState("black");
+
   return (
     <StyleOptionsContext.Provider
       value={{
+        //Pencil States
         pencilSize,
         setPencilSize,
         pencilThinning,
@@ -37,6 +43,7 @@ export const StyleOptionsProvider = ({ children }) => {
         pencilColor,
         setPencilColor,
 
+        //Rectangle States
         rectangleStrokeWidth,
         setRectangleStrokeWidth,
         rectangleRoughness,
@@ -51,6 +58,16 @@ export const StyleOptionsProvider = ({ children }) => {
         setRectangleStrokeColor,
         rectangleFill,
         setRectangleFill,
+
+        //Line States
+        lineStrokeWidth,
+        setLineStrokeWidth,
+        lineRoughness,
+        setLineRoughness,
+        lineBowing,
+        setLineBowing,
+        lineStrokeColor,
+        setLineStrokeColor,
       }}
     >
       {children}
