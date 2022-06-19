@@ -42,6 +42,7 @@ const drawElement = (
       break;
     case "text":
       context.textBaseline = "top";
+      context.fillStyle = "black"
       context.font = "24px sans-serif";
       context.fillText(element.text, element.x1, element.y1);
       break;
