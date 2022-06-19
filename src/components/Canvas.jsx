@@ -132,7 +132,17 @@ const Canvas = () => {
   }, [action, selectedElement]);
 
   // updateElement function allows us to update the x and y coodinates for moving elements.
-  const updateElement = (id, x1, y1, x2, y2, type, options) => {
+  const updateElement = (
+    id,
+    x1,
+    y1,
+    x2,
+    y2,
+    type,
+    options,
+    lineStyle,
+    rectStyle
+  ) => {
     const copyElementsState = [...elements];
 
     switch (type) {
@@ -145,8 +155,8 @@ const Canvas = () => {
           x2,
           y2,
           type,
-          lineStyleOptions,
-          rectangleStyleOptions
+          lineStyle,
+          rectStyle
         ); // updating the element.
         break;
       case "pencil":
@@ -246,7 +256,19 @@ const Canvas = () => {
     if (action === "drawing") {
       const index = elements.length - 1; // Last element of the array
       const { x1, y1 } = elements[index];
-      updateElement(index, x1, y1, clientX, clientY, toolType);
+      const lineStyle = lineStyleOptions;
+      const rectStyle = rectangleStyleOptions;
+      updateElement(
+        index,
+        x1,
+        y1,
+        clientX,
+        clientY,
+        toolType,
+        null,
+        lineStyle,
+        rectStyle
+      );
     } else if (action === "moving") {
       if (selectedElement.type === "pencil") {
         const newPoints = selectedElement.points.map((_, index) => ({
@@ -268,6 +290,8 @@ const Canvas = () => {
         const newY1 = clientY - offsetY;
         const options =
           selectedElement.type === "text" ? { text: selectedElement.text } : {};
+        const lineStyle = selectedElement.roughElement.options;
+        const rectStyle = selectedElement.roughElement.options;
         updateElement(
           id,
           newX1,
@@ -275,18 +299,31 @@ const Canvas = () => {
           newX1 + width,
           newY1 + height,
           type,
-          options
+          options,
+          lineStyle,
+          rectStyle
         );
       }
     } else if (action === "resizing") {
-      const { id, type, position, ...coordinates } = selectedElement;
+      const { id, type, position, roughElement, ...coordinates } =
+        selectedElement;
       const { x1, y1, x2, y2 } = resizedCoordinates(
         clientX,
         clientY,
         position,
         coordinates
       );
-      updateElement(id, x1, y1, x2, y2, type);
+      updateElement(
+        id,
+        x1,
+        y1,
+        x2,
+        y2,
+        type,
+        null,
+        roughElement.options,
+        roughElement.options
+      );
     }
   };
 
@@ -306,12 +343,16 @@ const Canvas = () => {
 
       const index = selectedElement.id;
       const { id, type } = elements[index];
-      if (
-        (action === "drawing" || action === "resizing") &&
-        adjustmentRequired(type)
-      ) {
+      if (action === "drawing" && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
-        updateElement(id, x1, y1, x2, y2, type);
+        const lineStyle = lineStyleOptions;
+        const rectStyle = rectangleStyleOptions;
+        updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
+      } else if (action === "resizing" && adjustmentRequired(type)) {
+        const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
+        const lineStyle = selectedElement.roughElement.options;
+        const rectStyle = selectedElement.roughElement.options;
+        updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
       }
     }
 
