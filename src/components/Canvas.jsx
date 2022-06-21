@@ -255,9 +255,9 @@ const Canvas = () => {
 
     if (action === "drawing") {
       const index = elements.length - 1; // Last element of the array
-      const { x1, y1 } = elements[index];
-      const lineStyle = lineStyleOptions;
-      const rectStyle = rectangleStyleOptions;
+      const { x1, y1, type } = elements[index];
+      const lineStyle = type === "line" ? lineStyleOptions : {};
+      const rectStyle = type === "rectangle" ? rectangleStyleOptions : {};
       updateElement(
         index,
         x1,
@@ -290,8 +290,14 @@ const Canvas = () => {
         const newY1 = clientY - offsetY;
         const options =
           selectedElement.type === "text" ? { text: selectedElement.text } : {};
-        const lineStyle = selectedElement.roughElement.options;
-        const rectStyle = selectedElement.roughElement.options;
+        const lineStyle =
+          selectedElement.type === "line"
+            ? selectedElement.roughElement.options
+            : {};
+        const rectStyle =
+          selectedElement.type === "rectangle"
+            ? selectedElement.roughElement.options
+            : {};
         updateElement(
           id,
           newX1,
@@ -313,17 +319,9 @@ const Canvas = () => {
         position,
         coordinates
       );
-      updateElement(
-        id,
-        x1,
-        y1,
-        x2,
-        y2,
-        type,
-        null,
-        roughElement.options,
-        roughElement.options
-      );
+      const lineStyle = type === "line" ? roughElement.options : {};
+      const rectStyle = type === "rectangle" ? roughElement.options : {};
+      updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
     }
   };
 
@@ -345,13 +343,19 @@ const Canvas = () => {
       const { id, type } = elements[index];
       if (action === "drawing" && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
-        const lineStyle = lineStyleOptions;
-        const rectStyle = rectangleStyleOptions;
+        const lineStyle = type === "line" ? lineStyleOptions : {};
+        const rectStyle = type === "rectangle" ? rectangleStyleOptions : {};
         updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
       } else if (action === "resizing" && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
-        const lineStyle = selectedElement.roughElement.options;
-        const rectStyle = selectedElement.roughElement.options;
+        const lineStyle =
+          selectedElement.type === "line"
+            ? selectedElement.roughElement.options
+            : {};
+        const rectStyle =
+          selectedElement.type === "rectangle"
+            ? selectedElement.roughElement.options
+            : {};
         updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
       }
     }
