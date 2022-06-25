@@ -164,6 +164,7 @@ const Canvas = () => {
           ...copyElementsState[id].points,
           { x: x2, y: y2 },
         ];
+        copyElementsState[id].color = pencilColor
         break;
       case "text":
         // measureText allows us to get the width of the text written.
