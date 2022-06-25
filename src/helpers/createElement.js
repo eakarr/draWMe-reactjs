@@ -10,7 +10,8 @@ const createElement = (
   y2,
   type,
   lineStyleOptions,
-  rectangleStyleOptions
+  rectangleStyleOptions,
+  pencilColor
 ) => {
   switch (type) {
     case "line":
@@ -27,7 +28,7 @@ const createElement = (
             );
       return { id, x1, y1, x2, y2, type, roughElement };
     case "pencil":
-      return { id, type, points: [{ x: x1, y: y1 }] };
+      return { id, type, points: [{ x: x1, y: y1 }], color: pencilColor };
     case "text":
       return { id, type, x1, y1, x2, y2, text: "" };
     default:
