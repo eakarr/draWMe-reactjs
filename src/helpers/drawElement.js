@@ -10,8 +10,7 @@ const drawElement = (
   pencilStreamline,
   pencilSmoothing,
   pencilTaperStart,
-  pencilTaperEnd,
-  pencilColor
+  pencilTaperEnd
 ) => {
   switch (element.type) {
     case "line":
@@ -37,12 +36,12 @@ const drawElement = (
           },
         })
       );
-      context.fillStyle = pencilColor;
+      context.fillStyle = element.color;
       context.fill(new Path2D(stroke));
       break;
     case "text":
       context.textBaseline = "top";
-      context.fillStyle = "black"
+      context.fillStyle = "black";
       context.font = "24px sans-serif";
       context.fillText(element.text, element.x1, element.y1);
       break;
