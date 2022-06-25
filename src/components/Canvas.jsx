@@ -87,8 +87,7 @@ const Canvas = () => {
         pencilStreamline,
         pencilSmoothing,
         pencilTaperStart,
-        pencilTaperEnd,
-        pencilColor
+        pencilTaperEnd
       );
     });
   }, [
@@ -101,7 +100,6 @@ const Canvas = () => {
     pencilSmoothing,
     pencilTaperStart,
     pencilTaperEnd,
-    pencilColor,
   ]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
@@ -164,7 +162,7 @@ const Canvas = () => {
           ...copyElementsState[id].points,
           { x: x2, y: y2 },
         ];
-        copyElementsState[id].color = pencilColor
+        copyElementsState[id].color = pencilColor;
         break;
       case "text":
         // measureText allows us to get the width of the text written.
