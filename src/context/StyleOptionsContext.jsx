@@ -24,6 +24,39 @@ export const StyleOptionsProvider = ({ children }) => {
   const [lineBowing, setLineBowing] = useState(1);
   const [lineStrokeColor, setLineStrokeColor] = useState("black");
 
+  const pencilAllStyles = {
+    size: pencilSize,
+    thinning: pencilThinning / 100,
+    streamline: pencilStreamline / 100,
+    smoothing: pencilSmoothing / 100,
+    start: {
+      cap: true,
+      taper: pencilTaperStart,
+    },
+    end: {
+      cap: true,
+      taper: pencilTaperEnd,
+    },
+  };
+
+  
+  let rectangleStyleOptions = {
+    strokeWidth: rectangleStrokeWidth,
+    roughness: rectangleRoughness,
+    bowing: rectangleBowing,
+    hachureGap: rectangleHachureGap,
+    hachureAngle: rectangleHachureAngle,
+    stroke: rectangleStrokeColor,
+    fill: rectangleFill,
+  };
+
+  let lineStyleOptions = {
+    strokeWidth: lineStrokeWidth,
+    roughness: lineRoughness,
+    bowing: lineBowing,
+    stroke: lineStrokeColor,
+  };
+
   return (
     <StyleOptionsContext.Provider
       value={{
@@ -42,6 +75,7 @@ export const StyleOptionsProvider = ({ children }) => {
         setPencilTaperEnd,
         pencilColor,
         setPencilColor,
+        pencilAllStyles,
 
         //Rectangle States
         rectangleStrokeWidth,
@@ -58,6 +92,7 @@ export const StyleOptionsProvider = ({ children }) => {
         setRectangleStrokeColor,
         rectangleFill,
         setRectangleFill,
+        rectangleStyleOptions,
 
         //Line States
         lineStrokeWidth,
@@ -68,6 +103,7 @@ export const StyleOptionsProvider = ({ children }) => {
         setLineBowing,
         lineStrokeColor,
         setLineStrokeColor,
+        lineStyleOptions
       }}
     >
       {children}
