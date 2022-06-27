@@ -1,17 +1,7 @@
 import getStroke from "perfect-freehand";
 import getSvgPathFromStroke from "./getSvgPathFromStroke";
 
-const drawElement = (
-  roughCanvas,
-  context,
-  element,
-  pencilSize,
-  pencilThinning,
-  pencilStreamline,
-  pencilSmoothing,
-  pencilTaperStart,
-  pencilTaperEnd
-) => {
+const drawElement = (roughCanvas, context, element) => {
   switch (element.type) {
     case "line":
     case "rectangle":
@@ -21,20 +11,7 @@ const drawElement = (
       // Perfect Freehand library needs.
       // Size and everything can be changed from here by adding an option part. The object inside of the getStroke() is where your customization goes.
       const stroke = getSvgPathFromStroke(
-        getStroke(element.points, {
-          size: pencilSize,
-          thinning: pencilThinning / 100,
-          streamline: pencilStreamline / 100,
-          smoothing: pencilSmoothing / 100,
-          start: {
-            cap: true,
-            taper: pencilTaperStart,
-          },
-          end: {
-            cap: true,
-            taper: pencilTaperEnd,
-          },
-        })
+        getStroke(element.points, element.pencilStyles)
       );
       context.fillStyle = element.color;
       context.fill(new Path2D(stroke));
