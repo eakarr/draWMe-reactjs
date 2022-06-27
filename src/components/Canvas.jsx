@@ -30,77 +30,24 @@ const Canvas = () => {
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef();
   const {
-    pencilSize,
-    pencilThinning,
-    pencilStreamline,
-    pencilSmoothing,
-    pencilTaperStart,
-    pencilTaperEnd,
     pencilColor,
-    rectangleStrokeWidth,
-    rectangleRoughness,
-    rectangleBowing,
-    rectangleHachureGap,
-    rectangleHachureAngle,
-    rectangleStrokeColor,
-    rectangleFill,
-    lineStrokeWidth,
-    lineRoughness,
-    lineBowing,
-    lineStrokeColor,
+    pencilAllStyles,
+    rectangleStyleOptions,
+    lineStyleOptions,
   } = useContext(StyleOptionsContext);
 
-  let rectangleStyleOptions = {
-    strokeWidth: rectangleStrokeWidth,
-    roughness: rectangleRoughness,
-    bowing: rectangleBowing,
-    hachureGap: rectangleHachureGap,
-    hachureAngle: rectangleHachureAngle,
-    stroke: rectangleStrokeColor,
-    fill: rectangleFill,
-  };
-
-  let lineStyleOptions = {
-    strokeWidth: lineStrokeWidth,
-    roughness: lineRoughness,
-    bowing: lineBowing,
-    stroke: lineStrokeColor,
-  };
-
   ////////////////////////////////////////////////////////////////////////////////////
-
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height); // This cleans the previous draws. (x:0, y:0, canvas width, canvas height)
 
     const roughCanvas = rough.canvas(canvas); // Initializing the RoughJS
-
     elements.forEach((element) => {
       if (action === "writing" && selectedElement.id === element.id) return;
-      drawElement(
-        roughCanvas,
-        context,
-        element,
-        pencilSize,
-        pencilThinning,
-        pencilStreamline,
-        pencilSmoothing,
-        pencilTaperStart,
-        pencilTaperEnd
-      );
+      drawElement(roughCanvas, context, element);
     });
-  }, [
-    elements,
-    action,
-    selectedElement,
-    pencilSize,
-    pencilThinning,
-    pencilStreamline,
-    pencilSmoothing,
-    pencilTaperStart,
-    pencilTaperEnd,
-  ]);
+  }, [elements, action, selectedElement]);
 
   // This is for setting the ctrl-z / ctrl-y commands.
   useEffect(() => {
@@ -139,7 +86,8 @@ const Canvas = () => {
     type,
     options,
     lineStyle,
-    rectStyle
+    rectStyle,
+    pencilAllStyles
   ) => {
     const copyElementsState = [...elements];
 
@@ -163,6 +111,7 @@ const Canvas = () => {
           { x: x2, y: y2 },
         ];
         copyElementsState[id].color = pencilColor;
+        copyElementsState[id].pencilStyles = pencilAllStyles;
         break;
       case "text":
         // measureText allows us to get the width of the text written.
@@ -230,7 +179,11 @@ const Canvas = () => {
         clientY,
         clientX,
         clientY,
-        toolType
+        toolType,
+        lineStyleOptions,
+        rectangleStyleOptions,
+        pencilColor,
+        pencilAllStyles
       );
       setElements((prevState) => [...prevState, element]);
       setSelectedElement(element);
@@ -257,6 +210,7 @@ const Canvas = () => {
       const { x1, y1, type } = elements[index];
       const lineStyle = type === "line" ? lineStyleOptions : {};
       const rectStyle = type === "rectangle" ? rectangleStyleOptions : {};
+      const pencilStyles = type === "pencil" ? pencilAllStyles : {};
       updateElement(
         index,
         x1,
@@ -266,7 +220,8 @@ const Canvas = () => {
         toolType,
         null,
         lineStyle,
-        rectStyle
+        rectStyle,
+        pencilStyles
       );
     } else if (action === "moving") {
       if (selectedElement.type === "pencil") {
@@ -344,7 +299,19 @@ const Canvas = () => {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
         const lineStyle = type === "line" ? lineStyleOptions : {};
         const rectStyle = type === "rectangle" ? rectangleStyleOptions : {};
-        updateElement(id, x1, y1, x2, y2, type, null, lineStyle, rectStyle);
+        const pencilStyles = type === "pencil" ? pencilAllStyles : {};
+        updateElement(
+          id,
+          x1,
+          y1,
+          x2,
+          y2,
+          type,
+          null,
+          lineStyle,
+          rectStyle,
+          pencilStyles
+        );
       } else if (action === "resizing" && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]); //If the adjustment is required then it will update the elements in place and adjust the coordinates. It is not required for the pencil tool.
         const lineStyle =
