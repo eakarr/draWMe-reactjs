@@ -22,12 +22,15 @@ import "./Canvas.scss";
 import styledButtonTypes from "../helpers/styledButtonTypes";
 import RedoUndoButtons from "./RedoUndoButtons";
 import BurgerButton from "./BurgerButton";
+import TrashBinButton from "./TrashBinButton";
+import TrashBinModal from "./TrashBinModal";
 
 const Canvas = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
   const [action, setAction] = useState("none");
   const [toolType, setToolType] = useState("pencil");
   const [selectedElement, setSelectedElement] = useState(null);
+  const [trashBinModalOpen, setTrashBinModalOpen] = useState(false);
   const textAreaRef = useRef();
   const {
     pencilColor,
@@ -161,14 +164,17 @@ const Canvas = () => {
       }
     }
     // else if (toolType === "eraser") {
+    //   if (elements.length === 0) {
+    //     return;
+    //   }
     //   const element = getElementAtPosition(clientX, clientY, elements);
-    //   console.log("Selected Element: ", element);
-    //   console.log("Before Deleting: ", elements);
-    //   const copyOfElements = elements;
-    //   const deletedElements = () => copyOfElements.splice(element.id, 1);
-    //   deletedElements()
-    //   setElements(copyOfElements)
-    //   console.log("After Deleting: ", elements);
+    //   let copyElements = elements;
+    //   const selectedDrawing = copyElements[element.id];
+    //   const deletedDrawing = { ...selectedDrawing, points: [{ x: 0, y: 0 }] };
+    //   const changedValues = elements.splice(element.id, 1, deletedDrawing)
+    //   console.log(changedValues);
+
+    //   setElements(changedValues)
     // }
     else {
       const id = elements.length;
@@ -339,6 +345,14 @@ const Canvas = () => {
     updateElement(id, x1, y1, null, null, type, { text: event.target.value });
   };
 
+  const trashBinButtonHandler = () => {
+    if (elements.length === 0) {
+      return;
+    }
+    setToolType("eraseAll");
+    setTrashBinModalOpen(true);
+  };
+
   ////////////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -353,6 +367,7 @@ const Canvas = () => {
             onClick={() => setToolType(button.id)}
           />
         ))}
+        <TrashBinButton onClick={trashBinButtonHandler} />
       </div>
 
       {toolType === "pencil" ? <BurgerButton toolType={toolType} /> : null}
@@ -385,6 +400,15 @@ const Canvas = () => {
           }}
         />
       ) : null}
+
+      {trashBinModalOpen && (
+        <TrashBinModal
+          setTrashBinModalOpen={setTrashBinModalOpen}
+          setToolType={setToolType}
+          setElements={setElements}
+        />
+      )}
+
       <canvas
         id="canvas"
         width={window.innerWidth}
