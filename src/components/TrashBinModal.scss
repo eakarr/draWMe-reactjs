@@ -1,0 +1,86 @@
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  width: 400px;
+  height: 400px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  .title {
+    font-size: x-large;
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    text-align: center;
+  }
+  .footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      width: 150px;
+      height: 45px;
+      margin: 10px;
+      border: none;
+      background-color: cornflowerblue;
+      color: white;
+      border-radius: 8px;
+      font-size: 20px;
+      cursor: pointer;
+      &:hover {
+        transition: all 400ms ease;
+        background-color: white;
+        color: cornflowerblue;
+        border: 1px cornflowerblue solid;
+      }
+    }
+  }
+}
+
+.title-close-button {
+  display: flex;
+  justify-content: flex-end;
+  height: 1rem;
+  button {
+    background-color: transparent;
+    color: rgb(165, 164, 164);
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    &:hover {
+      transition: all 400ms ease;
+      background-color: white;
+      color: crimson;
+    }
+  }
+}
+
+#cancel-button {
+  background-color: crimson;
+  &:hover {
+    transition: all 400ms ease;
+    background-color: white;
+    color: crimson;
+    border: 1px crimson solid;
+  }
+}
