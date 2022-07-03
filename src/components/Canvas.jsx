@@ -162,21 +162,66 @@ const Canvas = () => {
           setAction("resizing");
         }
       }
-    }
-    // else if (toolType === "eraser") {
-    //   if (elements.length === 0) {
-    //     return;
-    //   }
-    //   const element = getElementAtPosition(clientX, clientY, elements);
-    //   let copyElements = elements;
-    //   const selectedDrawing = copyElements[element.id];
-    //   const deletedDrawing = { ...selectedDrawing, points: [{ x: 0, y: 0 }] };
-    //   const changedValues = elements.splice(element.id, 1, deletedDrawing)
-    //   console.log(changedValues);
-
-    //   setElements(changedValues)
-    // }
-    else {
+    } else if (toolType === "eraser") {
+      if (elements.length === 0) {
+        return;
+      }
+      const element = getElementAtPosition(clientX, clientY, elements);
+      if (element) {
+        const copyElements = [...elements];
+        const selectedDrawing = copyElements[element.id];
+        if (element.type === "line") {
+          const deletedPointsOfSelectedDrawing = {
+            ...selectedDrawing,
+            x1: null,
+            y1: null,
+            x2: null,
+            y2: null,
+            roughElement: {
+              ...selectedDrawing.roughElement,
+              sets: [{ ops: [{ data: [], op: "" }], type: "path" }],
+            },
+          };
+          copyElements.splice(element.id, 1, deletedPointsOfSelectedDrawing);
+          setElements(copyElements);
+        } else if (element.type === "rectangle") {
+          const deletedPointsOfSelectedDrawing = {
+            ...selectedDrawing,
+            x1: null,
+            y1: null,
+            x2: null,
+            y2: null,
+            roughElement: {
+              ...selectedDrawing.roughElement,
+              sets: [
+                { ops: [{ data: [], op: "" }], type: "fillSketch" },
+                { ops: [{ data: [], op: "" }], type: "path" },
+              ],
+            },
+          };
+          copyElements.splice(element.id, 1, deletedPointsOfSelectedDrawing);
+          setElements(copyElements);
+        } else if (element.type === "pencil") {
+          const deletedPointsOfSelectedDrawing = {
+            ...selectedDrawing,
+            points: [{ x: null, y: null }],
+          };
+          copyElements.splice(element.id, 1, deletedPointsOfSelectedDrawing);
+          setElements(copyElements);
+        } else if (element.type === "text") {
+          const deletedPointsOfSelectedDrawing = {
+            ...selectedDrawing,
+            x1: null,
+            y1: null,
+            x2: null,
+            y2: null,
+            text: "",
+          };
+          copyElements.splice(element.id, 1, deletedPointsOfSelectedDrawing);
+          setElements(copyElements);
+        }
+      }
+    } else {
       const id = elements.length;
       // The reason that we are sending 2 times clientX and clientY is because when you click, you are creating all of your coordinates. After the creation,  we are updating the second clientX and clientY.
       const element = createElement(
