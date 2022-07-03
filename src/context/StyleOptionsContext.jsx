@@ -11,7 +11,7 @@ export const StyleOptionsProvider = ({ children }) => {
   const [pencilTaperEnd, setPencilTaperEnd] = useState(50);
   const [pencilColor, setPencilColor] = useState("black");
 
-  const [rectangleStrokeWidth, setRectangleStrokeWidth] = useState(1);
+  const [rectangleStrokeWidth, setRectangleStrokeWidth] = useState(16);
   const [rectangleRoughness, setRectangleRoughness] = useState(1);
   const [rectangleBowing, setRectangleBowing] = useState(1);
   const [rectangleHachureGap, setRectangleHachureGap] = useState(8);
@@ -19,14 +19,14 @@ export const StyleOptionsProvider = ({ children }) => {
   const [rectangleStrokeColor, setRectangleStrokeColor] = useState("black");
   const [rectangleFill, setRectangleFill] = useState("transparent");
 
-  const [lineStrokeWidth, setLineStrokeWidth] = useState(1);
+  const [lineStrokeWidth, setLineStrokeWidth] = useState(16);
   const [lineRoughness, setLineRoughness] = useState(1);
   const [lineBowing, setLineBowing] = useState(1);
   const [lineStrokeColor, setLineStrokeColor] = useState("black");
 
   const pencilAllStyles = {
-    size: pencilSize,
-    thinning: pencilThinning / 100,
+    size: pencilSize / 2.5,
+    thinning: pencilThinning / 50,
     streamline: pencilStreamline / 100,
     smoothing: pencilSmoothing / 100,
     start: {
@@ -39,11 +39,10 @@ export const StyleOptionsProvider = ({ children }) => {
     },
   };
 
-  
   let rectangleStyleOptions = {
-    strokeWidth: rectangleStrokeWidth,
-    roughness: rectangleRoughness,
-    bowing: rectangleBowing,
+    strokeWidth: rectangleStrokeWidth / 5,
+    roughness: rectangleRoughness / 10,
+    bowing: rectangleBowing / 100,
     hachureGap: rectangleHachureGap,
     hachureAngle: rectangleHachureAngle,
     stroke: rectangleStrokeColor,
@@ -51,9 +50,9 @@ export const StyleOptionsProvider = ({ children }) => {
   };
 
   let lineStyleOptions = {
-    strokeWidth: lineStrokeWidth,
-    roughness: lineRoughness,
-    bowing: lineBowing,
+    strokeWidth: lineStrokeWidth / 5,
+    roughness: lineRoughness / 10,
+    bowing: lineBowing / 10,
     stroke: lineStrokeColor,
   };
 
@@ -103,7 +102,7 @@ export const StyleOptionsProvider = ({ children }) => {
         setLineBowing,
         lineStrokeColor,
         setLineStrokeColor,
-        lineStyleOptions
+        lineStyleOptions,
       }}
     >
       {children}
