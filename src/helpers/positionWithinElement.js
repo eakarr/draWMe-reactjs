@@ -24,7 +24,7 @@ const positionWithinElement = (x, y, element) => {
         const nextPoint = element.points[index + 1];
         if (!nextPoint) return false;
         return (
-          onLine(point.x, point.y, nextPoint.x, nextPoint.y, x, y, 5) != null
+          onLine(point.x, point.y, nextPoint.x, nextPoint.y, x, y, 20) != null
         );
       });
       return betweenAnyPoint ? "inside" : null; // We don't need the start and end points because the resize function won't be implemented on free hand skecth.
