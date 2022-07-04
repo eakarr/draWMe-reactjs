@@ -3,7 +3,7 @@ import { useState, createContext } from "react";
 export const StyleOptionsContext = createContext();
 
 export const StyleOptionsProvider = ({ children }) => {
-  const [pencilSize, setPencilSize] = useState(16);
+  const [pencilSize, setPencilSize] = useState(40);
   const [pencilThinning, setPencilThinning] = useState(50);
   const [pencilStreamline, setPencilStreamline] = useState(50);
   const [pencilSmoothing, setPencilSmoothing] = useState(50);
@@ -42,7 +42,7 @@ export const StyleOptionsProvider = ({ children }) => {
   let rectangleStyleOptions = {
     strokeWidth: rectangleStrokeWidth / 5,
     roughness: rectangleRoughness / 10,
-    bowing: rectangleBowing / 100,
+    bowing: rectangleBowing / 10,
     hachureGap: rectangleHachureGap,
     hachureAngle: rectangleHachureAngle,
     stroke: rectangleStrokeColor,
