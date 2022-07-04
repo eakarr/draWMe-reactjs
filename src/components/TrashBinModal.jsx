@@ -2,8 +2,14 @@ import "./TrashBinModal.scss";
 
 const TrashBinModal = ({ setTrashBinModalOpen, setToolType, setElements }) => {
   return (
-    <div className="modal-background">
-      <div className="modal-container">
+    <div
+      className="modal-background"
+      onClick={() => {
+        setTrashBinModalOpen(false);
+        setToolType("pencil");
+      }}
+    >
+      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="title-close-button">
           <button
             onClick={() => {
