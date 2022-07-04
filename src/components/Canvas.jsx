@@ -254,6 +254,12 @@ const Canvas = () => {
       event.target.style.cursor = element
         ? cursorChangerForPositions(element.position)
         : "default";
+    } else if (toolType === "eraser") {
+      const element = getElementAtPosition(clientX, clientY, elements);
+      event.target.style.cursor = element
+      //"url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAARRJREFUOE/dlDFLxEAQhd+BVouFZ3vlQuwSyI+5a7PBRkk6k9KzTOwStJFsWv0xgaQzkNLWszim0kL2OOFc9oKRYHFTz37Lm/dmJhi5JiPzcBjAOYDz7WheADz3jalP8oIxds85P3Zd90RBqqpad133SUSXAJ5M4H3AhWVZd1EUzYQQP96VZYkkSV7btr02QY1Axtgqz/NTz/OM6qSUCMNwRURneoMJOLdt+7Gu643MfeU4zrppmgt9pibgjRBiWRRFb0R934eUcgngdrfxX4CjSwZj7C3Lsqnu8Lc05XQQBO9ENP2NKapnE5s4jme608rhNE2HxWb7qwr2A+f8SAv2BxFdDQ32rpLRVu9Pl+0wztcg6V/VPW4Vw1FsawAAAABJRU5ErkJggg==') 10 10, auto"
+        ? "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAeQAAAHkBOLWIEgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAD3SURBVDiNjdOrTsRAFIfx3zwGy00toABPCGBRPAsJkoAEx3IRvAmOBwCFIlyCAUJC1rCLQgxmJmlm224n+Yv2nO+baXsaYoymrRBCH18xxtFEMcbYGARcIOIHOxM9UwRXCc75xXYnAS4LOGeMrVZB5dhNGWOzVtABzhlho4TPK8UukocqPEg3j7GCzw6C2wyfZbgiXMZHC/yGRTgs4YpkqUHyioU8hO+4afmc/dST4RfMV+pOUmG/RbKXep4xV9QEXKeGgxp4Dd94wmztKCdJHtsjrKfsYohH9GpPV+x2ir/ihd1jpunxQvk7hxB6WE2XwxjjnZb1D1Gfhup67HTYAAAAAElFTkSuQmCC') 10 10, auto"
+        : "default";
     }
 
     if (action === "drawing") {
@@ -383,7 +389,7 @@ const Canvas = () => {
     setSelectedElement(null);
   };
 
-  const onClickHandler = (event) => {
+  const textAreaOnClickHandler = (event) => {
     const { id, x1, y1, type } = selectedElement;
     setAction("none");
     setSelectedElement(null);
@@ -391,9 +397,6 @@ const Canvas = () => {
   };
 
   const trashBinButtonHandler = () => {
-    if (elements.length === 0) {
-      return;
-    }
     setToolType("eraseAll");
     setTrashBinModalOpen(true);
   };
@@ -428,7 +431,7 @@ const Canvas = () => {
       {action === "writing" ? (
         <textarea
           ref={textAreaRef}
-          onClick={onClickHandler}
+          onClick={textAreaOnClickHandler}
           style={{
             position: "fixed",
             top: selectedElement.y1 - 3,
