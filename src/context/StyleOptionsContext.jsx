@@ -4,7 +4,7 @@ export const StyleOptionsContext = createContext();
 
 export const StyleOptionsProvider = ({ children }) => {
   const [pencilSize, setPencilSize] = useState(40);
-  const [pencilThinning, setPencilThinning] = useState(50);
+  const [pencilThinning, setPencilThinning] = useState(20);
   const [pencilStreamline, setPencilStreamline] = useState(50);
   const [pencilSmoothing, setPencilSmoothing] = useState(50);
   const [pencilTaperStart, setPencilTaperStart] = useState(50);
