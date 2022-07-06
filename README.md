@@ -4,7 +4,7 @@
 
 DraWMe is a canvas-based desktop drawing application where you can draw anything you want.
 
-Live Vercel version available here: ...Coming Soon!
+Live Vercel version available here: https://drawing-app-reactjs.vercel.app/
 
 ## Content
 
