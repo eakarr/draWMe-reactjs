@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+<p align="center">
+<img src="./src/assets/DraWMe.png" alt="DraWMe" width="800"/>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+DraWMe is a canvas-based desktop drawing application where you can draw anything you want.
 
-## Available Scripts
+Live Vercel version available here: https://drawing-app-reactjs.vercel.app/
 
-In the project directory, you can run:
+## Content
 
-### `npm start`
+- [Introduction](#introduction)
+- [Used Technologies](#used-technologies)
+- [Libraries](#libraries)
+- [Installation](#installation)
+- [Previews](#previews)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<br>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Introduction
 
-### `npm test`
+DraWMe is a canvas-based desktop drawing app that allows users to draw by using tools like freehand sketches, lines, rectangles, and texts. All the drawing pieces can be moved where ever you want! The rectangles and line tools have an extra feature which is resizing. You can resize them as you wish! Every tool has its own styling panel (except the text tool) where you can change colors, roughness, size, smoothness, stroke width, hachure gap and angle, and many more! You can delete your drawings with clear all trash bin or by simply using the eraser tool. If you accidentally delete something, no problem! We have redo-undo buttons to get those drawings back! Enjoy the application :)!
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Known Issues: 
+- Deleting drawings inside of the rectangles will delete the rectangle first, and then the other drawings inside of the rectangle. It is better to move the rectangle first, then delete it. It will be fixed soon!
+- Text tool focus issues. It will be fixed soon!
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Used Technologies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- HTML
+- JavaScript
+- ReactJS
+- SASS
+- Vercel
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<br>
 
-### `npm run eject`
+## Libraries
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Perfect-freehand
+- Roughjs
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- First, clone the project:
 
-## Learn More
+```sh
+git clone https://github.com/eakarr/drawing-app-reactjs.git
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Then, start the project on localhost:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# install dependencies with npm
+npm install
 
-### Code Splitting
+# serve at localhost:3000
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<br>
+<br>
 
-### Analyzing the Bundle Size
+# Previews
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<center>
 
-### Making a Progressive Web App
+## Canvas
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<p align="center">
+<img src="./src/assets/canvas-preview.png" alt="canvas" width="800"/>
+</p>
 
-### Advanced Configuration
+</center>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br>
+<br>
