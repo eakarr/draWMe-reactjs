@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./src/assets/DraWMe.png" alt="DraWMe" width="800"/>
+<img src="./public/assets/DraWMe.png" alt="DraWMe" width="800"/>
 </p>
 
 DraWMe is a canvas-based desktop drawing application where you can draw anything you want.
@@ -71,7 +71,7 @@ npm start
 ## Canvas
 
 <p align="center">
-<img src="./src/assets/canvas-preview.png" alt="canvas" width="800"/>
+<img src="./public/assets/canvas-preview.png" alt="canvas" width="800"/>
 </p>
 
 </center>
