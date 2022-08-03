@@ -1,0 +1,48 @@
+.flex {
+  display: flex;
+
+  &-jcenter {
+    justify-content: center;
+  }
+
+  &-jbetween {
+    justify-content: space-between;
+  }
+
+  &-jend {
+    justify-content: flex-end;
+  }
+
+  &-dcolumn {
+    flex-direction: column;
+  }
+
+  &-drow {
+    flex-direction: row;
+  }
+
+  &-acenter {
+    align-items: center;
+  }
+}
+
+.position {
+  &-fixed {
+    position: fixed;
+  }
+  &-rel {
+    position: relative;
+  }
+}
+
+.text {
+  &-acenter {
+    text-align: center;
+  }
+}
+
+.display {
+  &-iblock {
+    display: inline-block;
+  }
+}

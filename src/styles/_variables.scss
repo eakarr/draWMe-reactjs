@@ -1,0 +1,27 @@
+//colors
+$c-white: white;
+$c-yellow: #ffdc60;
+$c-lightblue: cornflowerblue;
+$c-crimson: crimson;
+$c-gainsboro: gainsboro;
+$c-turquoise:  turquoise;
+$c-gray: rgb(207, 204, 204);
+$c-darkgray: rgb(165, 164, 164);
+$c-black-70: rgba(0, 0, 0, 0.7);
+$c-black-35: rgba(0, 0, 0, 0.35);
+$c-black-15: rgba(0, 0, 0, 0.15);
+$c-transparent: transparent;
+
+//transitions
+$transition: all 400ms ease;
+
+//animations
+$animation: slideRight 0.5s forwards;
+@keyframes slideRight {
+  0% {
+    left: -100vw;
+  }
+  100% {
+    left: 0;
+  }
+}

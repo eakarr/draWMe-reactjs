@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+input, button {
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
