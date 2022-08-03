@@ -1,0 +1,109 @@
+@import "../../styles/variables";
+@import "../../styles/mixin-spacings";
+
+.container--tools {
+  padding: 0.3rem;
+  border-radius: 1rem;
+  top: 12rem;
+  left: 0.3rem;
+  background-color: $c-white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0rem 0.25rem 0.5rem;
+}
+
+.tool {
+  width: 3rem;
+  height: 3rem;
+  margin: 0.4rem 0;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: $c-gray;
+  box-shadow: rgba(0, 0, 0, 0.15) 0rem 0.25rem 0.5rem;
+  &:hover,
+  &.active {
+    transition: $transition;
+    background-color: $c-yellow;
+  }
+}
+
+// Trashbin modal
+.modal-background {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: $c-black-70;
+}
+
+.modal-container {
+  width: 25rem;
+  height: 25rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: $c-white;
+  box-shadow: $c-black-35 0rem 0.5rem 1rem;
+  &-title {
+    margin-top: 0.5rem;
+    font-size: x-large;
+  }
+  &-body {
+    font-size: 1.7rem;
+  }
+  &-footer {
+    margin-top: 0.5rem;
+    button {
+      width: 9rem;
+      height: 2.75rem;
+      margin: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1.25rem;
+      color: $c-white;
+      background-color: $c-lightblue;
+      &:hover {
+        border: 1px $c-lightblue solid;
+        color: $c-lightblue;
+        background-color: $c-white;
+        transition: $transition;
+      }
+    }
+  }
+}
+
+.title-close-button {
+  height: 1rem;
+  button {
+    border: none;
+    font-size: 1.6rem;
+    color: $c-darkgray;
+    background-color: $c-transparent;
+    cursor: pointer;
+    &:hover {
+      color: $c-crimson;
+      background-color: $c-white;
+      transition: $transition;
+    }
+  }
+}
+
+#cancel-button {
+  background-color: $c-crimson;
+  &:hover {
+    border: 1px $c-crimson solid;
+    color: $c-crimson;
+    background-color: $c-white;
+    transition: $transition;
+  }
+}
+
+// Textarea
+.textarea {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: 1.5rem sans-serif;
+  resize: auto;
+  overflow: hidden;
+  white-space: pre;
+  background: $c-transparent;
+}

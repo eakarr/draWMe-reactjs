@@ -1,0 +1,27 @@
+@import "../../styles/variables";
+@import "../../styles/mixin-spacings";
+
+.container--redo-undo {
+  padding: 0.3rem;
+  margin: 0.3rem;
+  bottom: 0;
+  border-radius: 1rem;
+  border: none;
+  background-color: $c-white;
+  box-shadow: $c-black-35 0rem 0.25rem 0.5rem;
+
+  .redo,
+  .undo {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 0.4rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: $c-gray;
+    box-shadow: $c-black-15 0rem 0.25rem 0.5rem;
+    &:hover {
+      transition: $transition;
+      background-color: $c-yellow;
+    }
+  }
+}
