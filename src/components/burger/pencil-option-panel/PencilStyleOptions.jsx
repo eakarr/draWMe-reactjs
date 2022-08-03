@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { StyleOptionsContext } from "../../../context/StyleOptionsContext";
 
 import { pencilColorsTypes } from "../../../helpers/pencilColorsTypes";
+import ColorOptions from "../option-types/ColorOptions";
+import StylingOption from "../option-types/StylingOption";
 
 const PencilStyleOptions = () => {
   const {
@@ -69,38 +71,21 @@ const PencilStyleOptions = () => {
   return (
     <div className="styling-panel--container position-fixed">
       {pencilStylingTypes.map((type) => (
-        <div className="styling-panel--option_wrapper flex flex-jbetween flex-acenter" key={type.id}>
-          <label htmlFor={type.id}>{type.id}</label>
-          <div className="styling-panel--option_wrapper--range flex flex-jend">
-            <input
-              type="range"
-              min={1}
-              max={100}
-              value={type.value}
-              onChange={type.onChange}
-            />
-            <span>{type.value}</span>
-          </div>
+        <div key={type.id}>
+          <StylingOption
+            id={type.id}
+            value={type.value}
+            onChange={type.onChange}
+          />
         </div>
       ))}
 
-      <div className="styling-panel--option_wrapper flex flex-jbetween flex-acenter">
-        <label htmlFor="Colors">Colors</label>
-        <div className="styling-panel--colors_wrapper flex flex-jbetween flex-acenter">
-          {pencilColorsTypes.map((color) => (
-            <div
-              key={color.id}
-              style={{ background: color.colorType }}
-              onClick={() => setPencilColor(color.colorType)}
-              className={
-                pencilColor === color.id
-                  ? "styling-panel--colors_wrapper--color active"
-                  : "styling-panel--colors_wrapper--color"
-              }
-            ></div>
-          ))}
-        </div>
-      </div>
+      <ColorOptions
+        state={pencilColor}
+        setState={setPencilColor}
+        colorTypes={pencilColorsTypes}
+        label={"Colors"}
+      />
     </div>
   );
 };

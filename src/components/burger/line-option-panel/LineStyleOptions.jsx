@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { StyleOptionsContext } from "../../../context/StyleOptionsContext";
 
 import { lineColorsTypes } from "../../../helpers/lineColorsTypes";
+import ColorOptions from "../option-types/ColorOptions";
+import StylingOption from "../option-types/StylingOption";
 
 const LineStyleOptions = () => {
   const {
@@ -42,38 +44,21 @@ const LineStyleOptions = () => {
   return (
     <div className="styling-panel--container position-fixed">
       {lineStylingTypes.map((type) => (
-        <div className="styling-panel--option_wrapper flex flex-jbetween flex-acenter" key={type.id}>
-          <label htmlFor={type.id}>{type.id}</label>
-          <div className="styling-panel--option_wrapper--range flex flex-jend">
-            <input
-              type="range"
-              min={1}
-              max={100}
-              value={type.value}
-              onChange={type.onChange}
-            />
-            <span>{type.value}</span>
-          </div>
+        <div key={type.id}>
+          <StylingOption
+            id={type.id}
+            value={type.value}
+            onChange={type.onChange}
+          />
         </div>
       ))}
 
-      <div className="styling-panel--option_wrapper flex flex-jbetween flex-acenter">
-        <label htmlFor="Stroke Colors">Stroke Colors</label>
-        <div className="styling-panel--colors_wrapper flex flex-jbetween flex-acenter">
-          {lineColorsTypes.map((color) => (
-            <div
-              key={color.id}
-              style={{ background: color.colorType }}
-              onClick={() => setLineStrokeColor(color.colorType)}
-              className={
-                lineStrokeColor === color.id
-                  ? "styling-panel--colors_wrapper--color active"
-                  : "styling-panel--colors_wrapper--color"
-              }
-            ></div>
-          ))}
-        </div>
-      </div>
+      <ColorOptions
+        state={lineStrokeColor}
+        setState={setLineStrokeColor}
+        colorTypes={lineColorsTypes}
+        label={"Stroke Colors"}
+      />
     </div>
   );
 };
