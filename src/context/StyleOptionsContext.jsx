@@ -1,8 +1,13 @@
 import { useState, createContext } from "react";
+import { useHistory } from "../hooks/useHistory";
 
 export const StyleOptionsContext = createContext();
 
 export const StyleOptionsProvider = ({ children }) => {
+  const [toolType, setToolType] = useState("pencil");
+  const [trashBinModalOpen, setTrashBinModalOpen] = useState(false);
+  const [elements, setElements, undo, redo] = useHistory([]);
+
   const [pencilSize, setPencilSize] = useState(40);
   const [pencilThinning, setPencilThinning] = useState(20);
   const [pencilStreamline, setPencilStreamline] = useState(50);
@@ -59,6 +64,15 @@ export const StyleOptionsProvider = ({ children }) => {
   return (
     <StyleOptionsContext.Provider
       value={{
+        toolType,
+        setToolType,
+        trashBinModalOpen,
+        setTrashBinModalOpen,
+        elements,
+        setElements,
+        undo,
+        redo,
+
         //Pencil States
         pencilSize,
         setPencilSize,
