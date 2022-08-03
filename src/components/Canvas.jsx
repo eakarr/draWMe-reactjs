@@ -5,10 +5,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { useHistory } from "../hooks/useHistory";
 import { StyleOptionsContext } from "../context/StyleOptionsContext";
 import rough from "roughjs/bundled/rough.esm";
-import ToolButtons from "./ToolButtons";
+import Tools from "./tools/Tools";
 
 import createElement from "../helpers/createElement";
 import getElementAtPosition from "../helpers/getElementAtPosition";
@@ -18,25 +17,24 @@ import cursorChangerForPositions from "../helpers/cursorChangerForPositions";
 import adjustElementCoordinates from "../helpers/adjustElementCoordinates";
 import resizedCoordinates from "../helpers/resizedCoordinates";
 
+import RedoUndoButtons from "./redo-undo/RedoUndoButtons";
+import BurgerButton from "./burger/BurgerButton";
+import TextArea from "./tools/text/textArea/TextArea";
+
 import "./Canvas.scss";
-import styledButtonTypes from "../helpers/styledButtonTypes";
-import RedoUndoButtons from "./RedoUndoButtons";
-import BurgerButton from "./BurgerButton";
-import TrashBinButton from "./TrashBinButton";
-import TrashBinModal from "./TrashBinModal";
 
 const Canvas = () => {
-  const [elements, setElements, undo, redo] = useHistory([]);
   const [action, setAction] = useState("none");
-  const [toolType, setToolType] = useState("pencil");
   const [selectedElement, setSelectedElement] = useState(null);
-  const [trashBinModalOpen, setTrashBinModalOpen] = useState(false);
   const textAreaRef = useRef();
   const {
     pencilColor,
     pencilAllStyles,
     rectangleStyleOptions,
     lineStyleOptions,
+    toolType,
+    elements,
+    setElements,
   } = useContext(StyleOptionsContext);
 
   ////////////////////////////////////////////////////////////////////////////////////
@@ -51,24 +49,6 @@ const Canvas = () => {
       drawElement(roughCanvas, context, element);
     });
   }, [elements, action, selectedElement]);
-
-  // This is for setting the ctrl-z / ctrl-y commands.
-  useEffect(() => {
-    const undoRedoFunction = (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "z") {
-        undo();
-      }
-      if ((event.metaKey || event.ctrlKey) && event.key === "y") {
-        redo();
-      }
-    };
-
-    document.addEventListener("keydown", undoRedoFunction);
-
-    return () => {
-      document.removeEventListener("keydown", undoRedoFunction);
-    };
-  }, [undo, redo]);
 
   // This is for text area focusing.
   useEffect(() => {
@@ -117,11 +97,10 @@ const Canvas = () => {
         copyElementsState[id].pencilStyles = pencilAllStyles;
         break;
       case "text":
-        // measureText allows us to get the width of the text written.
         const textWidth = document
           .getElementById("canvas")
           .getContext("2d")
-          .measureText(options.text).width;
+          .measureText(options.text).width; // measureText allows us to get the width of the text written.
         const textHeight = 24;
         copyElementsState[id] = {
           ...createElement(id, x1, y1, x1 + textWidth, y1 + textHeight, type),
@@ -395,67 +374,8 @@ const Canvas = () => {
     updateElement(id, x1, y1, null, null, type, { text: event.target.value });
   };
 
-  const trashBinButtonHandler = () => {
-    setToolType("eraseAll");
-    setTrashBinModalOpen(true);
-  };
-
-  ////////////////////////////////////////////////////////////////////////////////////
-
   return (
     <div>
-      <div className="container-style-buttons">
-        {styledButtonTypes.map((button) => (
-          <ToolButtons
-            key={button.id}
-            toolType={toolType}
-            src={button.icon}
-            id={button.id}
-            onClick={() => setToolType(button.id)}
-          />
-        ))}
-        <TrashBinButton onClick={trashBinButtonHandler} />
-      </div>
-
-      {toolType === "pencil" ? <BurgerButton toolType={toolType} /> : null}
-      {toolType === "rectangle" ? <BurgerButton toolType={toolType} /> : null}
-      {toolType === "line" ? <BurgerButton toolType={toolType} /> : null}
-
-      <RedoUndoButtons
-        className={"container-undo-redo-buttons"}
-        undo={undo}
-        redo={redo}
-      />
-
-      {action === "writing" ? (
-        <textarea
-          ref={textAreaRef}
-          onClick={textAreaOnClickHandler}
-          style={{
-            position: "fixed",
-            top: selectedElement.y1 - 3,
-            left: selectedElement.x1,
-            font: "24px sans-serif",
-            margin: 0,
-            padding: 0,
-            border: 0,
-            outline: 0,
-            resize: "auto",
-            overflow: "hidden",
-            whiteSpace: "pre",
-            background: "transparent",
-          }}
-        />
-      ) : null}
-
-      {trashBinModalOpen && (
-        <TrashBinModal
-          setTrashBinModalOpen={setTrashBinModalOpen}
-          setToolType={setToolType}
-          setElements={setElements}
-        />
-      )}
-
       <canvas
         id="canvas"
         width={window.innerWidth}
@@ -463,7 +383,29 @@ const Canvas = () => {
         onMouseDown={mouseDownHandler}
         onMouseMove={mouseMoveHandler}
         onMouseUp={mouseUpHandler}
-      ></canvas>
+      />
+
+      <RedoUndoButtons />
+
+      <Tools />
+
+      {toolType === "pencil" ||
+      toolType === "rectangle" ||
+      toolType === "line" ? (
+        <BurgerButton />
+      ) : null}
+
+      {action === "writing" ? (
+        <TextArea
+          textAreaRef={textAreaRef}
+          textAreaOnClickHandler={textAreaOnClickHandler}
+          style={{
+            position: "fixed",
+            top: selectedElement.y1 - 3,
+            left: selectedElement.x1,
+          }}
+        />
+      ) : null}
     </div>
   );
 };
