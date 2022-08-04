@@ -1,17 +1,20 @@
 $spacing-sizes: (
   0: 0rem,
   1: 0.25rem,
-  2: 0.5rem,
-  3: 0.75rem,
-  4: 1rem,
-  5: 2rem,
-  6: 3rem,
-  7: 4rem,
-  8: 5rem,
+  2: 0.3rem,
+  3: 0.4rem,
+  4: 0.5rem,
+  5: 0.75rem,
+  6: 1rem,
+  7: 1.5rem,
+  8: 2rem,
+  9: 3rem,
+  10: 4rem,
 ) !default;
 
 $spacing-important: true !default;
 
+// MARGIN
 @mixin m($t: 1, $r: null, $b: null, $l: null) {
   @if ($t and $r and $b and $l) {
     @include mt($t);
@@ -96,6 +99,7 @@ $spacing-important: true !default;
     )};
 }
 
+// PADDING
 @mixin p($t: 1, $r: null, $b: null, $l: null) {
   @if ($t and $r and $b and $l) {
     @include pt($t);
@@ -167,6 +171,84 @@ $spacing-important: true !default;
 
 @mixin pb($size: 1) {
   padding-bottom: map-get($spacing-sizes, $size) #{if(
+      $spacing-important,
+      "!important",
+      ""
+    )};
+}
+
+// BORDER RADIUS
+@mixin br($t: 1, $r: null, $b: null, $l: null) {
+  @if ($t and $r and $b and $l) {
+    @include brtr($t);
+    @include brbr($r);
+    @include brbl($b);
+    @include brtl($l);
+  } @else if ($t and $r and $b and not $l) {
+    @include brtr($t);
+    @include brx($r);
+    @include brbl($b);
+  } @else if ($t and $r and not $b and not $l) {
+    @include bry($t);
+    @include brx($r);
+  } @else if ($t and not $r and not $b and not $l) {
+    @include bry($t);
+    @include brx($t);
+  } @else {
+    @error "br(#{$t}, #{$r}, #{$b}, #{$l}): Invalid parameters. Expects br($size), br($y, $x), br($t, $x, $b) or br($t, $r, $b, $l)";
+  }
+}
+
+@mixin brx($r: 1, $l: null) {
+  @if ($r and $l) {
+    @include brbr($r);
+    @include brtl($l);
+  } @else if ($r and not $l) {
+    @include brbr($r);
+    @include brtl($r);
+  } @else {
+    @error "brx(#{$r}, #{$l}): Invalid parameters. Expects brx($size) or brx($r, $l)";
+  }
+}
+
+@mixin bry($t: 1, $b: null) {
+  @if ($t and $b) {
+    @include brtr($t);
+    @include brbl($b);
+  } @else if ($t and not $b) {
+    @include brtr($t);
+    @include brbl($t);
+  } @else {
+    @error "bry(#{$t}, #{$b}): Invalid parameters. Expects bry($size) or bry($t, $b)";
+  }
+}
+
+@mixin brtl($size: 1) {
+  border-top-left-radius: map-get($spacing-sizes, $size) #{if(
+      $spacing-important,
+      "!important",
+      ""
+    )};
+}
+
+@mixin brtr($size: 1) {
+  border-top-right-radius: map-get($spacing-sizes, $size) #{if(
+      $spacing-important,
+      "!important",
+      ""
+    )};
+}
+
+@mixin brbr($size: 1) {
+  border-bottom-right-radius: map-get($spacing-sizes, $size) #{if(
+      $spacing-important,
+      "!important",
+      ""
+    )};
+}
+
+@mixin brbl($size: 1) {
+  border-bottom-left-radius: map-get($spacing-sizes, $size) #{if(
       $spacing-important,
       "!important",
       ""
