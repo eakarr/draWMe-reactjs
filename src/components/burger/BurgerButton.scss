@@ -2,11 +2,10 @@
 @import "../../styles/mixin-spacings";
 
 .container--burger-button {
-  padding: 0.3rem;
-  margin-left: 0.3rem;
+  @include p(2);
+  @include ml(2);
   top: 0.5rem;
-  border-radius: 1rem;
-  border: none;
+  @include br(6);
   background-color: $c-white;
   box-shadow: $c-black-35 0rem 0.25rem 0.5rem;
   animation: $animation;
@@ -15,9 +14,8 @@
 .burger {
   width: 3rem;
   height: 3rem;
-  margin: 0.4rem 0;
-  border-radius: 0.5rem;
-  border: none;
+  @include my(3);
+  @include br(4);
   background-color: $c-gray;
   box-shadow: $c-black-15 0rem 0.25rem 0.5rem;
   &:hover,
@@ -29,28 +27,27 @@
 
 .styling-panel {
   &--container {
-    padding: 0.3rem;
-    background-color: $c-white;
-    border: none;
-    box-shadow: $c-black-35 0px 3px 8px;
-    border-radius: 1rem;
+    @include p(2);
+    @include ml(2);
     top: 5rem;
-    margin-left: 0.3rem;
+    @include br(6);
+    background-color: $c-white;
+    box-shadow: $c-black-35 0px 3px 8px;
     animation: $animation;
   }
   &--option_wrapper {
-    margin: 0.5rem;
-    padding: 0.2rem;
+    @include m(4);
+    @include p(1);
     border-bottom: 1px solid $c-gainsboro;
 
     label {
       width: 10rem;
-      margin-right: 1.5rem;
+      @include mr(7);
     }
     &--range {
       width: 100%;
       input {
-        margin-right: 0.75rem;
+        @include mr(5);
         width: 100%;
       }
       span {
@@ -66,7 +63,7 @@
       height: 1.5rem;
       width: 1.5rem;
       border: 1px solid $c-darkgray;
-      border-radius: 0.5rem;
+      @include br(4);
       cursor: pointer;
       &.active {
         border: 3px solid $c-turquoise;

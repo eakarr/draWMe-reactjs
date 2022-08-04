@@ -2,8 +2,8 @@
 @import "../../styles/mixin-spacings";
 
 .container--tools {
-  padding: 0.3rem;
-  border-radius: 1rem;
+  @include p(2);
+  @include br(6);
   top: 12rem;
   left: 0.3rem;
   background-color: $c-white;
@@ -13,9 +13,8 @@
 .tool {
   width: 3rem;
   height: 3rem;
-  margin: 0.4rem 0;
-  border-radius: 0.5rem;
-  border: none;
+  @include my(3);
+  @include br(4);
   background-color: $c-gray;
   box-shadow: rgba(0, 0, 0, 0.15) 0rem 0.25rem 0.5rem;
   &:hover,
@@ -37,8 +36,8 @@
 .modal-container {
   width: 25rem;
   height: 25rem;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
+  @include p(7);
+  @include br(5);
   background-color: $c-white;
   box-shadow: $c-black-35 0rem 0.5rem 1rem;
   &-title {
@@ -49,13 +48,12 @@
     font-size: 1.7rem;
   }
   &-footer {
-    margin-top: 0.5rem;
+    @include mt(4);
     button {
       width: 9rem;
       height: 2.75rem;
-      margin: 0.5rem;
-      border-radius: 0.5rem;
-      border: none;
+      @include m(4);
+      @include br(4);
       font-size: 1.25rem;
       color: $c-white;
       background-color: $c-lightblue;
@@ -72,7 +70,6 @@
 .title-close-button {
   height: 1rem;
   button {
-    border: none;
     font-size: 1.6rem;
     color: $c-darkgray;
     background-color: $c-transparent;
@@ -97,8 +94,8 @@
 
 // Textarea
 .textarea {
-  margin: 0;
-  padding: 0;
+  @include m(0);
+  @include p(0);
   border: 0;
   outline: 0;
   font: 1.5rem sans-serif;
